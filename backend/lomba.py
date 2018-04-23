@@ -69,7 +69,10 @@ class Lomba:
             self.db.rollback()
 
     # administrasi lomba
-    def daftarLomba(self, id_lomba, id_ketua)
+    def daftarLomba(self, id_lomba, id_ketua):
+        id_lomba = str(id_lomba)
+        id_ketua = str(id_ketua)
+        # sql = 'insert into lomba()'
     def tambahAnggota(self,id_lomba, id_ketua, id_user):
         id_lomba = str(id_lomba)
         id_ketua = str(id_ketua)
