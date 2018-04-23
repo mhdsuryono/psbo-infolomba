@@ -1,9 +1,11 @@
 from flask import Flask,request
 from user import User
+from lomba import Lomba
+
 
 app = Flask(__name__)
 c_user = User()
-
+c_lomba = Lomba()
 
 @app.route('/ping')
 def ping():

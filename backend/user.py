@@ -59,11 +59,11 @@ class User:
             print("error")
             self.db.rollback()
 
-    def geta(self):
-        sql='select * from user'
-        self.cursor.execute(sql)
-        for i in self.cursor.fetchall():
-            print i
+    # def geta(self):
+    #     sql='select * from user'
+    #     self.cursor.execute(sql)
+    #     for i in self.cursor.fetchall():
+    #         print i
     def login(self,username,password):
         username = str(username)
         password = str(password)
@@ -75,9 +75,9 @@ class User:
         # else:
         #     print "ok"
         #     print res
-        return res
+        return res  
 # buatAkun("kevin","1","kebin@gmail.com","1234","IPB","G645")
 # hapusAkun(2)
 # updateAKun(1,"","","","UI","","")
-coba = User()
-coba.login("nino@gmail.com","1234")
+# coba = User()
+# coba.login("nino@gmail.com","1234")
