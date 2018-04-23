@@ -1,5 +1,9 @@
 from flask import Flask,request
+from user import User
+
 app = Flask(__name__)
+c_user = User()
+
 
 @app.route('/ping')
 def ping():
@@ -10,10 +14,11 @@ def login():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-        if username == "admin" and password=="admin":
-            return "OK, berhasil"
+        res = c_user.login(username,password)
+        if res == ():
+            return "NO"
         else:
-            return "username atau password salah"
+            return str(res)
     else:
         return "must be POST method"
 @app.route('/get_lomba/<int:id_lomba>')
