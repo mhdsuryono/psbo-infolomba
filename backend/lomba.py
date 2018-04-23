@@ -68,6 +68,14 @@ class Lomba:
             print("error")
             self.db.rollback()
 
+    # administrasi lomba
+    def daftarLomba(self, id_lomba, id_ketua)
+    def tambahAnggota(self,id_lomba, id_ketua, id_user):
+        id_lomba = str(id_lomba)
+        id_ketua = str(id_ketua)
+        id_user = str(id_user)
+
+
 # coba = Lomba()
 # coba.buatLomba("lomba catur","main catur dan lain-lain","2017-06-15 09:34:21","2017-08-15 09:00:00","2017-06-15","IPB",2000,2)
 # coba.updateLomba(8,"lomba programming", "","","","","di rumahku",100,1)
