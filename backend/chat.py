@@ -34,12 +34,22 @@ class Chat:
     def getChat(self, id1, id2):
 
         sql='select * from chat where (id_pengirim='+str(id1)+' and id_penerima='+str(id2)+') or (id_pengirim='+str(id2)+' and id_penerima='+str(id1)+');'
+        # tambah cek status, jika == 2 , dibuang
+        # otomatis update status baca
+        # status 0=unread, 1=read, 2= telah dihapus
         self.cursor.execute(sql)
         for i in self.cursor.fetchall():
             print i
 
+    def semuaChat(self, id)
+        # mengambil semua id2 yang pernah chat dengan kita(id)
+        # diurutkan berdasarkan waktu chat terakhir
+
+        # panggi hitungUnread
+        # {{id="1",unread=4},{id="2",unerad=6},{}}
+
 coba = Chat()
-# coba.tambahChat(3,4, "wah")
+
 # coba.tambahChat(3,6,"makan yuk")
 # coba.tambahChat(6,3,"yuk makan sekarang")
 # coba.hapusChat(1)

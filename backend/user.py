@@ -15,10 +15,10 @@ class User:
         try:
             self.cursor.execute(sql)
             self.db.commit()
-            print("berhasil")
+            return True
         except:
-            print("error")
             self.db.rollback()
+            return False
 
 
 
@@ -27,10 +27,10 @@ class User:
         try:
             self.cursor.execute(sql)
             self.db.commit()
-            print("berhasil")
+            return True
         except:
-            print("error")
             self.db.rollback()
+            return False
 
     def updateAKun(self,id_user, nama, jenis_kelamin, email, universitas, nomor_ktm, password):
         list_arg=[nama, jenis_kelamin, email, universitas, nomor_ktm, password]
@@ -54,11 +54,10 @@ class User:
         try:
             self.cursor.execute(sql)
             self.db.commit()
-            print("berhasil")
+            return True
         except:
-            print("error")
             self.db.rollback()
-
+            return False
     # def geta(self):
     #     sql='select * from user'
     #     self.cursor.execute(sql)
