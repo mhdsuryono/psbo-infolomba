@@ -41,7 +41,7 @@ class Chat:
         for i in self.cursor.fetchall():
             print i
 
-    def semuaChat(self, id)
+    # def semuaChat(self, id)
         # mengambil semua id2 yang pernah chat dengan kita(id)
         # diurutkan berdasarkan waktu chat terakhir
 

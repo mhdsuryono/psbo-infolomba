@@ -10,8 +10,8 @@ c_chat = Chat()
 
 
 @app.route('/')
-def ping():
-    return "hai, ini backend loh\nCoba ping dengan /ping\nlogin dengan /login, metode=POST, param=(email,password)"
+def  home():
+    return "hai, ini backend loh<br>Coba ping dengan /ping<br>login dengan /login, metode=POST, param=(email,password)"
 
 @app.route('/ping')
 def ping():
