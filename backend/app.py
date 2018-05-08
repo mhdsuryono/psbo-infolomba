@@ -8,6 +8,11 @@ c_user = User()
 c_lomba = Lomba()
 c_chat = Chat()
 
+
+@app.route('/')
+def ping():
+    return "hai, ini backend loh\nCoba ping dengan /ping\nlogin dengan /login, metode=POST, param=(email,password)"
+
 @app.route('/ping')
 def ping():
     return "pong"
