@@ -2,10 +2,15 @@ import MySQLdb
 import datetime
 
 class Chat:
-    # add db.close() after end
     def __init__(self):
         self.db = MySQLdb.connect("localhost","root","","lombakampus")
+        
+    def __enter__(self):
         self.cursor = self.db.cursor()
+        return self
+
+    def __exit__(self,*arg):
+        self.cursor.close()
 
     def tambahChat(self, id_pengirim, id_penerima, pesan):
         # tanggal auto

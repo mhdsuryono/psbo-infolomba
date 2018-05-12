@@ -1,11 +1,16 @@
 import MySQLdb
 
 class Lomba:
-    # add db.close() after end
     def __init__(self):
         self.db = MySQLdb.connect("localhost","root","","lombakampus")
-        self.cursor = self.db.cursor()
+        
 
+    def __enter__(self):
+        self.cursor = self.db.cursor()
+        return self
+
+    def __exit__(self,*arg):
+        self.cursor.close()
 
     def buatLomba(self, nama_lomba, deskripsi, tanggal_dibuat, tanggal_mulai, tanggal_ditutup, tempat, biaya, id_user):
         tanggal_mulai = "timestamp('"+ tanggal_mulai +"')"

@@ -4,14 +4,29 @@ class User:
     # add db.close() after end
     def __init__(self):
         self.db = MySQLdb.connect("localhost","root","","lombakampus")
+        
+
+    def __enter__(self):
         self.cursor = self.db.cursor()
+        return self
+
+    def __exit__(self,*arg):
+        self.cursor.close()
 
     def buatAkun(self,nama, jenis_kelamin, email, password, universitas, no_ktm ):
         status_aktif = '1'
         status_akses = '0'
+
         list_arg = [nama,jenis_kelamin,email,universitas,no_ktm,password,status_aktif,status_akses]
         val = '","'.join(list_arg)
         sql='insert into user(nama,jenis_kelamin,email,universitas,nomor_ktm,password,status_aktif,status_akses) values ("'+val+'")' 
+        
+        # cek duplikat
+        self.cursor.execute('select count(*) from user where email="'+email+'"')
+        num_count = self.cursor.fetchone()[0]
+        if num_count>0:
+            print num_count
+            return False
         try:
             self.cursor.execute(sql)
             self.db.commit()
@@ -66,7 +81,7 @@ class User:
     def login(self,username,password):
         username = str(username)
         password = str(password)
-        sql='select * from user where email="'+username+'" and password="'+password+'" limit 1'
+        sql='select * from user where email="'+username+'" and password="'+password+'" where status_aktif=1 limit 1'
         self.cursor.execute(sql)
         res = self.cursor.fetchall()
         # if res == ():
@@ -75,7 +90,8 @@ class User:
         #     print "ok"
         #     print res
         return res  
-# buatAkun("kevin","1","kebin@gmail.com","1234","IPB","G645")
+# a = User()
+# a.buatAkun("kevin","1","kebin@gmail.com","1234","IPB","G645")
 # hapusAkun(2)
 # updateAKun(1,"","","","UI","","")
 # coba = User()
