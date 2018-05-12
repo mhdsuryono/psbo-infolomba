@@ -22,6 +22,7 @@ class Chat:
         except:
             print("error")
             self.db.rollback()
+            
     def hapusChat(self,id_chat):
         sql='delete from chat where id_chat='+str(id_chat)
         try:
