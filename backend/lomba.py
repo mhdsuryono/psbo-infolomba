@@ -75,15 +75,20 @@ class Lomba:
         except Exception,e:
             self.db.rollback()
             return e
-    # administrasi lomba
-    def daftarLomba(self, id_lomba, id_ketua):
-        id_lomba = str(id_lomba)
-        id_ketua = str(id_ketua)
-        # sql = 'insert into lomba()'
-    def tambahAnggota(self,id_lomba, id_ketua, id_user):
-        id_lomba = str(id_lomba)
-        id_ketua = str(id_ketua)
-        id_user = str(id_user)
+
+    def getLomba(self):
+        tanggal_sekarang = "timestamp('"+ str(datetime.datetime.now()) +"')"
+        sql = 'select * from lomba where tanggal_ditutup>'+tanggal_sekarang+';'
+        self.cursor.execute(sql)
+        res = self.cursor.fetchall()
+        return res
+
+    def getPendaftar(self,id_lomba):
+        sql = 'select id_ketua from adm_lomba where id_lomba='+id_lomba+';'
+        self.cursor.execute(sql)
+        res = self.cursor.fetchall()
+
+        return [str(x[0]) for x in res]
 
 
 # coba = Lomba()

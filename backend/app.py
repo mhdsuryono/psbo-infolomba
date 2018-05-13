@@ -20,10 +20,10 @@ def jsn(val,mess):
     return jsonify(status=str(val),message=str(mess))
 
 def jsn_login(val,mess):
-    return jsonify(status=str(val),id_anggota=str(mess))
+    return jsonify(status=str(val),id_user=str(mess))
 
 def jsn_anggota(val,res):
-    return jsonify(status=str(val),anggota=res)
+    return jsonify(status=str(val),id_user=res)
 
 @app.route('/')
 def  home():
@@ -217,6 +217,21 @@ def getStatusBayar():
         res = pembayaran.getStatusBayar(id_ketua, id_lomba)
         return jsn(1,res)
 
+
+@app.route('/getLomba',methods=['POST'])
+def getLomba():
+    with Lomba() as lomba:
+        resp = lomba.getLomba()
+        list_lomba = [{"id_lomba":res[0],"nama_lomba":res[1],"deskripsi":res[2],"tanggal_dibuat":res[3],"tanggal_mulai":res[4],"tanggal_ditutup":res[5],"tempat":res[6],"biaya":res[7],"id_user":res[8],"max_anggota":res[9],"kategori":res[10]} for res in resp]
+        return jsonify(list_lomba)
+@app.route('/getPendaftar',methods=['POST'])
+def getPendaftar():
+    with Lomba() as lomba:
+        data = request.get_json()
+        id_lomba = data["id_lomba"]
+        res = lomba.getPendaftar(id_lomba)
+        return jsn_anggota(1,res)
+
 @app.route('/tambahChat',methods=['POST'])
 def tambahChat():
     with Chat() as c_chat:
@@ -240,11 +255,6 @@ def hapusChat():
             return jsn(1,"")
         else:
             return jsn(0,"")
-        
-
-@app.route('/get_lomba/<int:id_lomba>')
-def get_lomba(id_lomba):
-    return "lomba ke %s" % id_lomba
 
 
 
