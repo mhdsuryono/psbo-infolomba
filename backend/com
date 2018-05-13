@@ -1,0 +1,9 @@
+# buat akun
+
+curl -X POST -H 'Content-Type: application/json' -d '{"nama":"jod","jenis_kelamin":"1","email":"jod@gmail.com","password":"1234","universitas":"ipb","no_ktm":"g641500"}' http://127.0.0.1:5000/buatAkun
+
+
+#login
+curl -X POST -H 'Content-Type: application/json' -d '{"email":"nino@gmail.com","password":"1234"}' http://127.0.0.1:5000/login
+
+

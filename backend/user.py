@@ -47,8 +47,8 @@ class User:
             self.db.rollback()
             return False
 
-    def updateAKun(self,id_user, nama, jenis_kelamin, email, universitas, nomor_ktm, password):
-        list_arg=[nama, jenis_kelamin, email, universitas, nomor_ktm, password]
+    def updateAkun(self,id_user, nama, jenis_kelamin, email, universitas, no_ktm, password):
+        list_arg=[nama, jenis_kelamin, email, universitas, no_ktm, password]
         val_arg=[]
         if list_arg[0]!="":
             val_arg.append("nama='"+nama+"'")
@@ -59,7 +59,7 @@ class User:
         if list_arg[3]!="":
             val_arg.append("universitas='"+universitas+"'")
         if list_arg[4]!="":
-            val_arg.append("nomor_ktm='"+nomor_ktm+"'")
+            val_arg.append("nomor_ktm='"+no_ktm+"'")
         if list_arg[5]!="":
             val_arg.append("password='"+password+"'")
 
@@ -81,9 +81,9 @@ class User:
     def login(self,username,password):
         username = str(username)
         password = str(password)
-        sql='select * from user where email="'+username+'" and password="'+password+'" and status_aktif=1;'
+        sql='select id_user from user where email="'+username+'" and password="'+password+'" and status_aktif=1;'
         self.cursor.execute(sql)
-        res = self.cursor.fetchall()
+        res = self.cursor.fetchone()
         # if res == ():
         #     print "no"
         # else:

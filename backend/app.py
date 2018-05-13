@@ -3,14 +3,20 @@ from flask import Flask,request,jsonify
 from user import User
 from lomba import Lomba
 from chat import Chat
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
+
 # c_user = User()
 # c_lomba = Lomba()
 # c_chat = Chat()
 
 def jsn(val,mess):
     return jsonify(status=str(val),message=str(mess))
+
+def jsn_login(val,mess):
+    return jsonify(status=str(val),id_user=str(mess))
 
 @app.route('/')
 def  home():
@@ -33,7 +39,7 @@ def login():
         if res == ():
             return jsn(0,"Not Found")
         else:
-            return jsn(1,"")
+            return jsn_login(1,res[0])
 
 
 @app.route('/buatAkun',methods=['POST'])
@@ -48,7 +54,7 @@ def buatAkun():
         no_ktm = data["no_ktm"]
         res = c_user.buatAkun(nama,jenis_kelamin,email,password,universitas,no_ktm)
         if res:
-            return jsn(1,"")
+            return jsn(1,"sukses")
         else:
             return jsn(0,"")
             
@@ -60,7 +66,7 @@ def hapusAkun():
         id_user = data["id_user"]
         res = c_user.hapusAkun(id_user)
         if res:
-            return jsn(1,"")
+            return jsn(1,"sukses")
         else:
             return jsn(0,"")
         
@@ -77,9 +83,9 @@ def updateAKun():
         no_ktm = data["no_ktm"]
         password = data["password"]
         
-        res = c_user.updateAkun(id_user, nama, jenis_kelamin, email, universitas, nomor_ktm, password)
+        res = c_user.updateAkun(id_user, nama, jenis_kelamin, email, universitas, no_ktm, password)
         if res:
-            return jsn(1,"")
+            return jsn(1,"sukses")
         else:
             return jsn(0,"")
 
@@ -121,17 +127,18 @@ def buatLomba():
         data = request.get_json()
         nama_lomba = data["nama_lomba"]
         deskripsi = data["deskripsi"]
-        tanggal_dibuat = data["tanggal_dibuat"]
         tanggal_mulai = data["tanggal_mulai"]
         tanggal_ditutup = data["tanggal_ditutup"]
         tempat = data["tempat"]
         biaya = data["biaya"]
+        max_anggota = data["max_anggota"]
+        kategori = data["kategori"]
         id_user = data["id_user"]
-        res = c_lomba.buatLomba(self, nama_lomba, deskripsi, tanggal_dibuat, tanggal_mulai, tanggal_ditutup, tempat, biaya, id_user)
-        if res:
-            return jsn(1,"")
+        res = c_lomba.buatLomba(nama_lomba, deskripsi, tanggal_mulai, tanggal_ditutup, tempat, biaya, max_anggota, kategori, id_user)
+        if res=="sukses":
+            return jsn(1,"sukses")
         else:
-            return jsn(0,"")
+            return jsn(0,res)
 
 @app.route('/tambahChat',methods=['POST'])
 def tambahChat():

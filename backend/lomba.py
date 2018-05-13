@@ -1,5 +1,5 @@
 import MySQLdb
-
+import datetime
 class Lomba:
     def __init__(self):
         self.db = MySQLdb.connect("localhost","root","","lombakampus")
@@ -12,22 +12,22 @@ class Lomba:
     def __exit__(self,*arg):
         self.cursor.close()
 
-    def buatLomba(self, nama_lomba, deskripsi, tanggal_dibuat, tanggal_mulai, tanggal_ditutup, tempat, biaya, id_user):
+    def buatLomba(self, nama_lomba, deskripsi, tanggal_mulai, tanggal_ditutup, tempat, biaya, max_anggota, kategori,id_user):
         tanggal_mulai = "timestamp('"+ tanggal_mulai +"')"
-        tanggal_dibuat = "timestamp('"+ tanggal_dibuat +"')"
+        tanggal_dibuat = "timestamp('"+ str(datetime.datetime.now()) +"')"
         tanggal_ditutup = "timestamp('"+ tanggal_ditutup +"')"
-        list_arg = [nama_lomba, deskripsi, tempat ]
-        list_arg2 = [tanggal_dibuat, tanggal_mulai, tanggal_ditutup, str(biaya), str(id_user)]
+        list_arg = [nama_lomba, deskripsi, tempat,kategori ]
+        list_arg2 = [tanggal_dibuat, tanggal_mulai, tanggal_ditutup, str(biaya),str(max_anggota), str(id_user)]
         val = '","'.join(list_arg)+'",' + ','.join(list_arg2)
-        sql='insert into lomba(nama_lomba, deskripsi, tempat, tanggal_dibuat, tanggal_mulai, tanggal_ditutup, biaya, id_user) values ("'+val+')' 
+        sql='insert into lomba(nama_lomba, deskripsi, tempat,kategori, tanggal_dibuat, tanggal_mulai, tanggal_ditutup, biaya,max_anggota, id_user) values ("'+val+')' 
         # print sql
         try:
             self.cursor.execute(sql)
             self.db.commit()
-            print("berhasil")
-        except:
-            print("error")
+            return "sukses"
+        except Exception, e:
             self.db.rollback()
+            return e
 
     def hapusLomba(self,id_lomba):
         sql='update lomba set id_user=0 where id_lomba='+str(id_lomba)+';'
