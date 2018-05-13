@@ -36,7 +36,7 @@ def login():
         except Exception, e:
             return jsn(0,e)
         res = c_user.login(email,password)
-        if res == ():
+        if res == None:
             return jsn(0,"Not Found")
         else:
             return jsn_login(1,res[0])
@@ -115,10 +115,10 @@ def hapusLomba():
         data = request.get_json()
         id_lomba = data["id_lomba"]
         res = c_lomba.hapusLomba(id_lomba)
-        if res:
-            return jsn(1,"")
+        if res == "sukses":
+            return jsn(1,"sukses")
         else:
-            return jsn(0,"")
+            return jsn(0,res[0])
 
 
 @app.route('/buatLomba',methods=['POST'])

@@ -89,7 +89,8 @@ class User:
         # else:
         #     print "ok"
         #     print res
-        return res  
+        print res
+        return res
 # a = User()
 # a.buatAkun("kevin","1","kebin@gmail.com","1234","IPB","G645")
 # hapusAkun(2)

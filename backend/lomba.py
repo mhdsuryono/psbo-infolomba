@@ -34,10 +34,12 @@ class Lomba:
         try:
             self.cursor.execute(sql)
             self.db.commit()
-            print("berhasil")
-        except:
-            print("error")
+        except Exception, e:
             self.db.rollback()
+            return e
+
+        # delete anggota juga nanti
+        return "sukses"
 
     def updateLomba(self, id_lomba, nama_lomba, deskripsi, tanggal_dibuat, tanggal_mulai, tanggal_ditutup, tempat, biaya, id_user):
         list_arg=[nama_lomba, deskripsi, tanggal_dibuat, tanggal_mulai, tanggal_ditutup, tempat, str(biaya), str(id_user)]
