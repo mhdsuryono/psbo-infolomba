@@ -84,11 +84,11 @@ class Lomba:
         return res
 
     def getPendaftar(self,id_lomba):
-        sql = 'select id_ketua from adm_lomba where id_lomba='+id_lomba+';'
+        sql = 'select id_adm,id_ketua from adm_lomba where id_lomba='+id_lomba+';'
         self.cursor.execute(sql)
         res = self.cursor.fetchall()
 
-        return [str(x[0]) for x in res]
+        return res
 
 
 # coba = Lomba()

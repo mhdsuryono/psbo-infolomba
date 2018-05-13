@@ -224,13 +224,15 @@ def getLomba():
         resp = lomba.getLomba()
         list_lomba = [{"id_lomba":res[0],"nama_lomba":res[1],"deskripsi":res[2],"tanggal_dibuat":res[3],"tanggal_mulai":res[4],"tanggal_ditutup":res[5],"tempat":res[6],"biaya":res[7],"id_user":res[8],"max_anggota":res[9],"kategori":res[10]} for res in resp]
         return jsonify(list_lomba)
+
 @app.route('/getPendaftar',methods=['POST'])
 def getPendaftar():
     with Lomba() as lomba:
         data = request.get_json()
         id_lomba = data["id_lomba"]
-        res = lomba.getPendaftar(id_lomba)
-        return jsn_anggota(1,res)
+        resp = lomba.getPendaftar(id_lomba)
+        list_info = [{"id_adm":res[0],"id_ketua":res[1]} for res in resp]
+        return jsonify(list_info)
 
 @app.route('/tambahChat',methods=['POST'])
 def tambahChat():
