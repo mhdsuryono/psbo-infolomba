@@ -172,4 +172,4 @@ def uplaod_foto():
         return "no file"
     file = request.files['file']
 
-    http://flask.pocoo.org/docs/1.0/patterns/fileuploads/
+    # http://flask.pocoo.org/docs/1.0/patterns/fileuploads/

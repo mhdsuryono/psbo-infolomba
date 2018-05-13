@@ -81,7 +81,7 @@ class User:
     def login(self,username,password):
         username = str(username)
         password = str(password)
-        sql='select * from user where email="'+username+'" and password="'+password+'" where status_aktif=1 limit 1'
+        sql='select * from user where email="'+username+'" and password="'+password+'" and status_aktif=1;'
         self.cursor.execute(sql)
         res = self.cursor.fetchall()
         # if res == ():
