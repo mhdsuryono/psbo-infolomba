@@ -23,9 +23,12 @@ DROP TABLE IF EXISTS `adm_lomba`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `adm_lomba` (
+  `id_adm` int(11) NOT NULL AUTO_INCREMENT,
   `id_ketua` int(11) DEFAULT NULL,
   `id_lomba` int(11) DEFAULT NULL,
-  `id_anggota` int(11) DEFAULT NULL
+  `nama_tim` varchar(255) DEFAULT NULL,
+  `status_penyisihan` int(4) DEFAULT NULL,
+  PRIMARY KEY (`id_adm`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -82,6 +85,8 @@ CREATE TABLE `lomba` (
   `tempat` varchar(255) DEFAULT NULL,
   `biaya` int(11) DEFAULT NULL,
   `id_user` int(11) DEFAULT NULL,
+  `max_anggota` int(10) DEFAULT NULL,
+  `kategori` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id_lomba`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -92,7 +97,6 @@ CREATE TABLE `lomba` (
 
 LOCK TABLES `lomba` WRITE;
 /*!40000 ALTER TABLE `lomba` DISABLE KEYS */;
-INSERT INTO `lomba` VALUES (8,'lomba programming','main catur dan lain-lain','2017-06-15 09:34:21','2017-08-15 09:00:00','2017-06-15 00:00:00','di rumahku',100,0);
 /*!40000 ALTER TABLE `lomba` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -149,6 +153,26 @@ LOCK TABLES `user` WRITE;
 INSERT INTO `user` VALUES (1,'sapi',1,'nino@gmail.com','UI','G645','1234',0,0),(2,'kevin',1,'kebin@gmail.com','IPB','G645','1234',0,0);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+--
+-- Table structure for table `anggota_lomba`
+--
+
+DROP TABLE IF EXISTS `anggota_lomba`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `anggota_lomba` (
+  `id_adm` int(11) DEFAULT NULL,
+  `id_anggota` int(11) DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user`
+--
+
+
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

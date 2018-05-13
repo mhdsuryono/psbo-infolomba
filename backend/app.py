@@ -165,6 +165,11 @@ def get_lomba(id_lomba):
 
 
 
-@app.route('/upload')
+@app.route('/upload',methods=['POST'])
 def uplaod_foto():
     upload_folder = 'uploads'
+    if 'file' not in request.files:
+        return "no file"
+    file = request.files['file']
+
+    http://flask.pocoo.org/docs/1.0/patterns/fileuploads/
