@@ -41,27 +41,28 @@ class Lomba:
         # delete anggota juga nanti
         return "sukses"
 
-    def updateLomba(self, id_lomba, nama_lomba, deskripsi, tanggal_dibuat, tanggal_mulai, tanggal_ditutup, tempat, biaya, id_user):
-        list_arg=[nama_lomba, deskripsi, tanggal_dibuat, tanggal_mulai, tanggal_ditutup, tempat, str(biaya), str(id_user)]
+    def updateLomba(self, id_lomba, nama_lomba, deskripsi, tanggal_mulai, tanggal_ditutup, tempat, biaya, max_anggota, kategori, id_user):
+        list_arg=[nama_lomba, deskripsi, tanggal_mulai, tanggal_ditutup, tempat, str(biaya),  str(max_anggota), kategori, str(id_user)]
         val_arg=[]
         if list_arg[0]!="":
             val_arg.append("nama_lomba='"+nama_lomba+"'")
         if list_arg[1]!="":
             val_arg.append("deskripsi='"+deskripsi+"'")
         if list_arg[2]!="":
-            tanggal_dibuat = "timestamp('"+ tanggal_dibuat +"')"
-            val_arg.append("tanggal_dibuat='"+tanggal_dibuat+"'")
-        if list_arg[3]!="":
             tanggal_mulai = "timestamp('"+ tanggal_mulai +"')"
             val_arg.append("tanggal_mulai='"+tanggal_mulai+"'")
-        if list_arg[4]!="":
+        if list_arg[3]!="":
             tanggal_ditutup = "timestamp('"+ tanggal_ditutup +"')"
             val_arg.append("tanggal_ditutup='"+tanggal_ditutup+"'")
-        if list_arg[5]!="":
+        if list_arg[4]!="":
             val_arg.append("tempat='"+tempat+"'")
-        if list_arg[6]!="":
+        if list_arg[5]!="":
             val_arg.append("biaya='"+str(biaya)+"'")
+        if list_arg[6]!="":
+            val_arg.append("max_anggota='"+str(max_anggota)+"'")
         if list_arg[7]!="":
+            val_arg.append("kategori='"+kategori+"'")
+        if list_arg[8]!="":
             val_arg.append("id_user='"+str(id_user)+"'")
 
         val=','.join(val_arg)
@@ -70,11 +71,10 @@ class Lomba:
         try:
             self.cursor.execute(sql)
             self.db.commit()
-            print("berhasil")
-        except:
-            print("error")
+            return "sukses"
+        except Exception,e:
             self.db.rollback()
-
+            return e
     # administrasi lomba
     def daftarLomba(self, id_lomba, id_ketua):
         id_lomba = str(id_lomba)

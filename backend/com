@@ -7,3 +7,13 @@ curl -X POST -H 'Content-Type: application/json' -d '{"nama":"jod","jenis_kelami
 curl -X POST -H 'Content-Type: application/json' -d '{"email":"nino@gmail.com","password":"1234"}' http://127.0.0.1:5000/login
 
 
+# buatlomba
+
+{"nama_lomba":"balap karung","deskripsi":"lomba dimana kita menggunakan karung","tanggal_mulai":"2018-08-15","tanggal_ditutup":"2018-09-25","tempat":"lapangan sempur","biaya":"50000","max_anggota":"5","kategori":"lari","id_user":"4"}
+
+# daftar lomba
+
+{"id_ketua":"1","id_lomba":"4","nama_tim":"the A team"}
+
+# update status bayar
+{"id_ketua":"9","id_lomba":"5","status_pembayaran":"2"}

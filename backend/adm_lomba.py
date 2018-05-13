@@ -12,7 +12,7 @@ class Adm_lomba:
     def __exit__(self,*arg):
         self.cursor.close()
 
-    def daftarLomba(self, id_ketua, id_lomba, nama_tim, status_penyisihan):
+    def daftarLomba(self, id_ketua, id_lomba, nama_tim):
         status_penyisihan = '0'
         nama_tim = '"'+nama_tim+'"';
         list_arg = [id_ketua, id_lomba, nama_tim, status_penyisihan]
@@ -24,18 +24,30 @@ class Adm_lomba:
         self.cursor.execute('select count(*) from adm_lomba where id_ketua="'+str(id_ketua)+'"')
         num_count = self.cursor.fetchone()[0]
         if num_count>0:
-            print "duplikat"
-            return False
+            return "duplicate ketua"
         try:
             self.cursor.execute(sql)
             self.db.commit()
-            return True
+            return self.bayar_init(id_ketua,id_lomba)
         except Exception, e:
             self.db.rollback()
-            print "gasgal",e
-            return False
+            return e
+
+    def bayar_init(self, id_ketua, id_lomba):
+        status_pembayaran = 0
+        list_arg = [id_ketua,id_lomba,status_pembayaran]
+        list_arg = ",".join(str(x) for x in list_arg)
+
+        sql = 'insert into pembayaran(id_ketua, id_lomba, status_pembayaran) values ('+list_arg+')'
+        try:
+            self.cursor.execute(sql)
+            self.db.commit()
+            return 'sukses'
+        except Exception, e:
+            self.db.rollback()
+            return e
 
 
 
-with Adm_lomba() as a:
-    a.daftarLomba(1,1,"sapi team",0)
+# with Adm_lomba() as a:
+#     a.daftarLomba(1,1,"sapi team",0)

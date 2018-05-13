@@ -3,6 +3,10 @@ from flask import Flask,request,jsonify
 from user import User
 from lomba import Lomba
 from chat import Chat
+from adm_lomba import Adm_lomba
+from anggota_lomba import Anggota_lomba
+from pembayaran import Pembayaran
+
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -16,7 +20,10 @@ def jsn(val,mess):
     return jsonify(status=str(val),message=str(mess))
 
 def jsn_login(val,mess):
-    return jsonify(status=str(val),id_user=str(mess))
+    return jsonify(status=str(val),id_anggota=str(mess))
+
+def jsn_anggota(val,res):
+    return jsonify(status=str(val),anggota=res)
 
 @app.route('/')
 def  home():
@@ -97,17 +104,18 @@ def updateLomba():
         id_lomba = data["id_lomba"]
         nama_lomba = data["nama_lomba"]
         deskripsi = data["deskripsi"]
-        tanggal_dibuat = data["tanggal_dibuat"]
         tanggal_mulai = data["tanggal_mulai"]
         tanggal_ditutup = data["tanggal_ditutup"]
         tempat = data["tempat"]
         biaya = data["biaya"]
+        max_anggota = data["max_anggota"]
+        kategori = data["kategori"]
         id_user = data["id_user"]
-        res = c_lomba.updateLomba(self, id_lomba, nama_lomba, deskripsi, tanggal_dibuat, tanggal_mulai, tanggal_ditutup, tempat, biaya, id_user)
-        if res:
-            return jsn(1,"")
+        res = c_lomba.updateLomba( id_lomba, nama_lomba, deskripsi, tanggal_mulai, tanggal_ditutup, tempat, biaya, max_anggota,kategori, id_user)
+        if res=="sukses":
+            return jsn(1,"sukses")
         else:
-            return jsn(0,"")
+            return jsn(0,res)
 
 @app.route('/hapusLomba',methods=['POST'])
 def hapusLomba():
@@ -140,6 +148,75 @@ def buatLomba():
         else:
             return jsn(0,res)
 
+@app.route('/daftarLomba',methods=['POST'])
+def daftarLomba():
+    with Adm_lomba() as c_adm:
+        data = request.get_json()
+        id_ketua = data["id_ketua"]
+        id_lomba = data["id_lomba"]
+        nama_tim = data["nama_tim"]
+        res = c_adm.daftarLomba(id_ketua, id_lomba, nama_tim)
+        if res=="sukses":
+            return jsn(1,"sukses")
+        else:
+            return jsn(0,res)
+
+@app.route('/tambahAnggota',methods=['POST'])
+def tambahAnggota():
+    with Anggota_lomba() as c_anggota:
+        data = request.get_json()
+        id_adm = data["id_adm"]
+        id_anggota = data["id_anggota"]
+        res = c_anggota.tambahAnggota(id_adm, id_anggota)
+        if res=="sukses":
+            return jsn(1,"sukses")
+        else:
+            return jsn(0,res)
+
+@app.route('/hapusAnggota',methods=['POST'])
+def hapusAnggota():
+    with Anggota_lomba() as c_anggota:
+        data = request.get_json()
+        id_adm = data["id_adm"]
+        id_anggota = data["id_anggota"]
+        res = c_anggota.hapusAnggota(id_adm, id_anggota)
+        if res=="sukses":
+            return jsn(1,"sukses")
+        else:
+            return jsn(0,res)
+
+@app.route('/getAnggota',methods=['POST'])
+def getAnggota():
+    with Anggota_lomba() as c_anggota:
+        data = request.get_json()
+        id_adm = data["id_adm"]
+        res = c_anggota.getAnggota(id_adm)
+        
+        return jsn_anggota(1,res)
+        
+
+@app.route('/updateStatusBayar',methods=['POST'])
+def updateStatusBayar():
+    with Pembayaran() as pembayaran:
+        data = request.get_json()
+        id_ketua = data["id_ketua"]
+        id_lomba = data["id_lomba"]
+        status_pembayaran = data["status_pembayaran"]
+        res = pembayaran.updateStatusBayar(id_ketua, id_lomba,status_pembayaran)
+        if res=="sukses":
+            return jsn(1,"sukses")
+        else:
+            return jsn(0,res)
+
+@app.route('/getStatusBayar',methods=['POST'])
+def getStatusBayar():
+    with Pembayaran() as pembayaran:
+        data = request.get_json()
+        id_ketua = data["id_ketua"]
+        id_lomba = data["id_lomba"]
+        res = pembayaran.getStatusBayar(id_ketua, id_lomba)
+        return jsn(1,res)
+
 @app.route('/tambahChat',methods=['POST'])
 def tambahChat():
     with Chat() as c_chat:
@@ -147,7 +224,7 @@ def tambahChat():
         id_pengirim = data["id_pengirim"]
         id_penerima = data["id_penerima"]
         pesan = data["pesan"]
-        res = c_chat.tambahChat(self, id_pengirim, id_penerima, pesan)
+        res = c_chat.tambahChat( id_pengirim, id_penerima, pesan)
         if res:
             return jsn(1,"")
         else:
@@ -158,7 +235,7 @@ def hapusChat():
     with Chat() as c_chat:
         data = request.get_json()
         id_chat = data["id_chat"]
-        res = c_chat.hapusChat(self,id_chat)
+        res = c_chat.hapusChat(id_chat)
         if res:
             return jsn(1,"")
         else:
