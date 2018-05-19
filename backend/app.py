@@ -285,7 +285,8 @@ def uploadPhoto(jenis_foto,nama_foto):
     
     if not os.path.exists(os.path.dirname(file_location)):
         os.makedirs(os.path.dirname(file_location))
-    os.remove(file_location)
+    if os.path.isfile(file_location):
+        os.remove(file_location)
     file_get.save(file_location)
 
     return jsn(1,"done")
