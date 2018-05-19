@@ -265,7 +265,9 @@ def getProfile():
         data = request.get_json()
         id_user = data["id_user"]
         resp = c_user.getProfile(id_user)
-        print resp
+
+        if resp == None:
+            return jsonify(status="0",message="not found")
         return jsonify(id_user=resp[0],nama=resp[1],jenis_kelamin=resp[2],email=resp[3],universitas=resp[4],nomor_ktm=resp[5],status_aktif=resp[6],status_akses=resp[7])
 
 # @app.route('/upload/<jenis_foto>/<id>',methods=['POST'])
