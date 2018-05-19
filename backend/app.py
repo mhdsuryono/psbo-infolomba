@@ -1,5 +1,5 @@
 from __future__ import with_statement
-from flask import Flask,request,jsonify
+from flask import Flask,request,jsonify,send_file
 from user import User
 from lomba import Lomba
 from chat import Chat
@@ -8,9 +8,12 @@ from anggota_lomba import Anggota_lomba
 from pembayaran import Pembayaran
 
 from flask_cors import CORS
+import os
 
 app = Flask(__name__)
 CORS(app)
+
+ALLOWED_EXTENSIONS = set(['jpg','jpeg'])
 
 # c_user = User()
 # c_lomba = Lomba()
@@ -270,14 +273,29 @@ def getProfile():
             return jsonify(status="0",message="not found")
         return jsonify(id_user=resp[0],nama=resp[1],jenis_kelamin=resp[2],email=resp[3],universitas=resp[4],nomor_ktm=resp[5],status_aktif=resp[6],status_akses=resp[7])
 
-# @app.route('/upload/<jenis_foto>/<id>',methods=['POST'])
-# def uplaod_foto(jenis_foto,id):
-#     upload_folder = 'uploads'
-#     jenis_foto = 
-#     if 'file' not in request.files:
-#         return "no file"
-#     file = request.files['file']
+@app.route('/upload/<jenis_foto>/<nama_foto>',methods=['POST'])
+def uploadPhoto(jenis_foto,nama_foto):
+    upload_folder = 'uploads'
+    jenis_foto = str(jenis_foto)
+    nama_foto = str(nama_foto)
+    if 'file' not in request.files:
+        return "no file"
+    file_get = request.files['file']
+    file_location = upload_folder+"/"+jenis_foto+"/"+nama_foto
+    
+    if not os.path.exists(os.path.dirname(file_location)):
+        os.makedirs(os.path.dirname(file_location))
+    os.remove(file_location)
+    file_get.save(file_location)
+
+    return jsn(1,"done")
     # buat folder berdasarkan jenis foto
+
+@app.route('/foto/<jenis_foto>/<nama_foto>',methods=['POST','GET'])
+def getPhoto(jenis_foto,nama_foto):
+    upload_folder = 'uploads'
+    file_location = upload_folder+"/"+jenis_foto+"/"+nama_foto
+    return send_file(file_location,mimetype='image/jpeg')
 
 
     # http://flask.pocoo.org/docs/1.0/patterns/fileuploads/
