@@ -259,13 +259,23 @@ def hapusChat():
             return jsn(0,"")
 
 
+@app.route('/getProfile',methods=['POST'])
+def getProfile():
+    with User() as c_user:
+        data = request.get_json()
+        id_user = data["id_user"]
+        resp = c_user.getProfile(id_user)
+        print resp
+        return jsonify(id_user=resp[0],nama=resp[1],jenis_kelamin=resp[2],email=resp[3],universitas=resp[4],nomor_ktm=resp[5],status_aktif=resp[6],status_akses=resp[7])
 
+# @app.route('/upload/<jenis_foto>/<id>',methods=['POST'])
+# def uplaod_foto(jenis_foto,id):
+#     upload_folder = 'uploads'
+#     jenis_foto = 
+#     if 'file' not in request.files:
+#         return "no file"
+#     file = request.files['file']
+    # buat folder berdasarkan jenis foto
 
-@app.route('/upload',methods=['POST'])
-def uplaod_foto():
-    upload_folder = 'uploads'
-    if 'file' not in request.files:
-        return "no file"
-    file = request.files['file']
 
     # http://flask.pocoo.org/docs/1.0/patterns/fileuploads/

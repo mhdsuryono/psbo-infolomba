@@ -91,6 +91,11 @@ class User:
         #     print res
         # print res
         return res
+    def getProfile(self,id_user):
+        sql = 'select * from user where id_user='+str(id_user)+';'
+        self.cursor.execute(sql)
+        res = self.cursor.fetchone()
+        return res
 # a = User()
 # a.buatAkun("kevin","1","kebin@gmail.com","1234","IPB","G645")
 # hapusAkun(2)
