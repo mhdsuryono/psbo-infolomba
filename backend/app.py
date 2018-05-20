@@ -48,8 +48,10 @@ def login():
         res = c_user.login(email,password)
         if res == None:
             return jsn(0,"Not Found")
-        else:
-            return jsn_login(1,res[0])
+
+        resp = c_user.getProfile(str(res[0]))
+
+        return jsonify(id_user=resp[0],nama=resp[1],jenis_kelamin=resp[2],email=resp[3],universitas=resp[4],nomor_ktm=resp[5],status_aktif=resp[6],status_akses=resp[7],status='1')
 
 
 @app.route('/buatAkun',methods=['POST'])
@@ -87,13 +89,11 @@ def updateAKun():
         data = request.get_json()
         id_user = data["id_user"]
         nama = data["nama"]
-        jenis_kelamin = data["jenis_kelamin"]
         email = data["email"]
         universitas = data["universitas"]
         no_ktm = data["no_ktm"]
-        password = data["password"]
         
-        res = c_user.updateAkun(id_user, nama, jenis_kelamin, email, universitas, no_ktm, password)
+        res = c_user.updateAkun(id_user, nama, "", email, universitas, no_ktm, "")
         if res:
             return jsn(1,"sukses")
         else:
