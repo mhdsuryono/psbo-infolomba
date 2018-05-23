@@ -83,6 +83,21 @@ class Lomba:
         res = self.cursor.fetchall()
         return res
 
+    def getLombaKategori(self,kategori):
+        tanggal_sekarang = "timestamp('"+ str(datetime.datetime.now()) +"')"
+        sql = 'select * from lomba where tanggal_ditutup>'+tanggal_sekarang+' and kategori="'+kategori+'";'
+        print (sql)
+        self.cursor.execute(sql)
+        res = self.cursor.fetchall()
+        return res
+
+    def getLombaId(self,id_user):
+        tanggal_sekarang = "timestamp('"+ str(datetime.datetime.now()) +"')"
+        sql = 'select * from lomba where id_user='+id_user+';'
+        self.cursor.execute(sql)
+        res = self.cursor.fetchall()
+        return res
+
     def getPendaftar(self,id_lomba):
         sql = 'select id_adm,id_ketua from adm_lomba where id_lomba='+id_lomba+';'
         self.cursor.execute(sql)
