@@ -263,10 +263,11 @@ def tambahChat():
         id_penerima = data["id_penerima"]
         pesan = data["pesan"]
         res = c_chat.tambahChat( id_pengirim, id_penerima, pesan)
+        # return status
         if res:
-            return jsn(1,"")
+            return jsn(1,"OK")
         else:
-            return jsn(0,"")
+            return jsn(0,"ERR")
 
 @app.route('/hapusChat',methods=['POST'])
 def hapusChat():
@@ -275,9 +276,27 @@ def hapusChat():
         id_chat = data["id_chat"]
         res = c_chat.hapusChat(id_chat)
         if res:
-            return jsn(1,"")
+            return jsn(1,"OK")
         else:
-            return jsn(0,"")
+            return jsn(0,"ERR")
+
+@app.route('/getChat',methods=['POST'])
+def getChat():
+    with Chat() as c_chat:
+        data = request.get_json()
+        id_1 = data["id_1"]
+        id_2 = data["id_2"]
+        resp = c_chat.getChat(id_1,id_2)
+        list_chat = [{"id_chat":res[0],"id_pengirim":res[1],"id_penerima":res[2],"pesan":res[3],"tanggal":res[4],"status_baca":res[5]} for res in resp]
+        return jsonify(list_chat)
+
+@app.route('/semuaChat',methods=['POST'])
+def semuaChat():
+    with Chat() as c_chat:
+        data = request.get_json()
+        id_user = data["id_user"]
+        resp = c_chat.semuaChat(id_user)
+        return jsn_anggota(1,resp)
 
 
 @app.route('/getProfile',methods=['POST'])
@@ -290,6 +309,25 @@ def getProfile():
         if resp == None:
             return jsonify(status="0",message="not found")
         return jsonify(id_user=resp[0],nama=resp[1],jenis_kelamin=resp[2],email=resp[3],universitas=resp[4],no_ktm=resp[5],status_aktif=resp[6],status_akses=resp[7])
+
+
+
+@app.route('/ubahPassword',methods=['POST'])
+def ubahPassword():
+    with User() as c_user:
+        data = request.get_json()
+        id_user = data["id_user"]
+        passlama = data["passlama"]
+        passbaru = data["passbaru"]
+        
+        res = c_user.ubahPassword(id_user, passlama, passbaru)
+        if res:
+            return jsn(1,"sukses")
+        else:
+            # berarti passlama salah
+            return jsn(0,"")
+
+
 
 @app.route('/upload/<jenis_foto>/<nama_foto>',methods=['POST'])
 def uploadPhoto(jenis_foto,nama_foto):
@@ -310,7 +348,7 @@ def uploadPhoto(jenis_foto,nama_foto):
     return jsn(1,"done")
     # buat folder berdasarkan jenis foto
 
-@app.route('/foto/<jenis_foto>/<nama_foto>',methods=['POST','GET'])
+@app.route('/getPhoto/<jenis_foto>/<nama_foto>',methods=['POST','GET'])
 def getPhoto(jenis_foto,nama_foto):
     upload_folder = 'uploads'
     file_location = upload_folder+"/"+jenis_foto+"/"+nama_foto

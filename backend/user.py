@@ -96,6 +96,27 @@ class User:
         self.cursor.execute(sql)
         res = self.cursor.fetchone()
         return res
+
+
+    def ubahPassword(self,id_user, passlama,passbaru):
+        sql='select id_user from user where id_user="'+str(id_user)+'" and password="'+passlama+'" and status_aktif=1;'
+        self.cursor.execute(sql)
+        res = self.cursor.fetchone()
+
+        if res != None:
+            sql='update user set password="'+passbaru+'" where id_user='+str(id_user)+';'
+            try:
+                self.cursor.execute(sql)
+                self.db.commit()
+                return True
+            except:
+                print "erro didisini"
+                self.db.rollback()
+                return False
+        else:
+            return False
+
+
 # a = User()
 # a.buatAkun("kevin","1","kebin@gmail.com","1234","IPB","G645")
 # hapusAkun(2)

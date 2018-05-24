@@ -23,20 +23,21 @@ class Chat:
         try:
             self.cursor.execute(sql)
             self.db.commit()
-            print("berhasil")
+            return True
         except:
-            print("error")
             self.db.rollback()
+            return False
             
     def hapusChat(self,id_chat):
         sql='delete from chat where id_chat='+str(id_chat)
         try:
             self.cursor.execute(sql)
             self.db.commit()
-            print("berhasil")
+            return True
         except:
-            print("error")
             self.db.rollback()
+            return False
+
     def getChat(self, id1, id2):
 
         sql='select * from chat where (id_pengirim='+str(id1)+' and id_penerima='+str(id2)+') or (id_pengirim='+str(id2)+' and id_penerima='+str(id1)+');'
@@ -44,8 +45,25 @@ class Chat:
         # otomatis update status baca
         # status 0=unread, 1=read, 2= telah dihapus
         self.cursor.execute(sql)
-        for i in self.cursor.fetchall():
-            print i
+        res = self.cursor.fetchall()
+        return res
+
+    def semuaChat(self,  id_user):
+
+        sql='select id_penerima,id_pengirim from chat where id_pengirim= '+str(id_user)+ ' or id_penerima='+str(id_user)+';'
+
+        # tambah cek status, jika == 2 , dibuang
+        # otomatis update status baca
+        # status 0=unread, 1=read, 2= telah dihapus
+        self.cursor.execute(sql)
+        res = self.cursor.fetchall()
+        set_id = set()
+        for i in res:
+            set_id.add(int(i[0]))
+            set_id.add(int(i[1]))
+        list_id = list(set_id)
+        list_id.remove(int(id_user))
+        return list_id
 
     # def semuaChat(self, id)
         # mengambil semua id2 yang pernah chat dengan kita(id)
