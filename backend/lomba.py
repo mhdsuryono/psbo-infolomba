@@ -93,7 +93,7 @@ class Lomba:
 
     def getLombaId(self,id_user):
         tanggal_sekarang = "timestamp('"+ str(datetime.datetime.now()) +"')"
-        sql = 'select * from lomba where id_user='+id_user+';'
+        sql = 'select * from lomba where id_user='+str(id_user)+';'
         self.cursor.execute(sql)
         res = self.cursor.fetchall()
         return res
