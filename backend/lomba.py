@@ -105,6 +105,14 @@ class Lomba:
 
         return res
 
+    def getLombaIdLomba(self,id_lomba):
+        tanggal_sekarang = "timestamp('"+ str(datetime.datetime.now()) +"')"
+        sql = 'select * from lomba where tanggal_ditutup>'+tanggal_sekarang+' and id_lomba="'+str(id_lomba)+'";'
+        print "dari sql",sql
+        self.cursor.execute(sql)
+        res = self.cursor.fetchall()
+        return res
+
 
 # coba = Lomba()
 # coba.buatLomba("lomba catur","main catur dan lain-lain","2017-06-15 09:34:21","2017-08-15 09:00:00","2017-06-15","IPB",2000,2)

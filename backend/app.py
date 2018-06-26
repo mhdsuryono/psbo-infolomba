@@ -328,6 +328,14 @@ def ubahPassword():
             # berarti passlama salah
             return jsn(0,"")
 
+@app.route('/getLombaSaya',methods=['POST'])
+def getLombaSaya():
+    with Anggota_lomba() as anggota_lomba:
+        data = request.get_json()
+        id_user = data["id_anggota"]
+        resp = anggota_lomba.getLombaSaya(id_user)
+        list_lomba = [{"id_lomba":res[0],"nama_lomba":res[1],"deadline":res[2]} for res in resp]
+        return jsonify(list_lomba)
 
 
 @app.route('/upload/<jenis_foto>/<nama_foto>',methods=['POST'])

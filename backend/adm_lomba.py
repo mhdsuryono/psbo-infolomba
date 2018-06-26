@@ -1,6 +1,9 @@
 from __future__ import with_statement
 import MySQLdb
 
+from anggota_lomba import Anggota_lomba
+
+
 class Adm_lomba:
     def __init__(self):
         self.db = MySQLdb.connect("localhost","root","","lombakampus")
@@ -22,13 +25,23 @@ class Adm_lomba:
         
         # cek duplikat
         self.cursor.execute('select count(*) from adm_lomba where id_ketua="'+str(id_ketua)+'" and id_lomba="'+str(id_lomba)+'"')
-        num_count = self.cursor.fetchone()[0]
+        num_count = self.cursor.fetchone()
+        num_count = num_count[0]
         if num_count>0:
             return "duplicate ketua"
         try:
             self.cursor.execute(sql)
             self.db.commit()
+
+            self.cursor.close()
+            self.cursor = self.db.cursor()
+            self.cursor.execute('select id_adm from adm_lomba where id_ketua="'+str(id_ketua)+'" and id_lomba="'+str(id_lomba)+'"') 
+            id_adm = self.cursor.fetchone()[0]
+            with Anggota_lomba() as c_anggota:
+                id_anggota = id_ketua
+                res = c_anggota.tambahAnggota(id_adm, id_anggota)
             return self.bayar_init(id_ketua,id_lomba)
+
         except Exception, e:
             self.db.rollback()
             return e
@@ -46,6 +59,8 @@ class Adm_lomba:
         except Exception, e:
             self.db.rollback()
             return e
+
+
 
 
 
