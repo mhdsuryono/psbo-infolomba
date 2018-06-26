@@ -5,7 +5,7 @@ from db import Database
 
 from user import User
 
-class Chat(Database):
+class Chat(Database,User):
     def tambahChat(self, id_pengirim, id_penerima, pesan):
         # tanggal auto
         tanggal = datetime.datetime.now().strftime("timestamp('%Y-%m-%d %H:%M:%S')")
@@ -62,9 +62,8 @@ class Chat(Database):
         self.cursor = self.db.cursor()
 
         for id_user in list_id:
-            with User() as c_user:
-                resp = c_user.getProfile(id_user)
-                list_nama.append(resp[1])
+            resp = self.getProfile(id_user)
+            list_nama.append(resp[1])
         return list_id,list_nama
 
     # def semuaChat(self, id)

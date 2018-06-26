@@ -14,9 +14,6 @@ CORS(app)
 
 ALLOWED_EXTENSIONS = set(['jpg','jpeg'])
 
-# c_user = User()
-# c_lomba = Lomba()
-# c_chat = Chat()
 
 def jsn(val,mess):
     return jsonify(status=str(val),message=str(mess))
@@ -38,18 +35,10 @@ def ping():
 @app.route('/login',methods=['POST'])
 def login():
     with User() as c_user:
-        data = request.get_json()
-        try:
-            email = data["email"]
-            password = data["password"]
-        except Exception, e:
-            return jsn(0,e)
-        res = c_user.login(email,password)
+        res = c_user.login(request.get_json()["email"],request.get_json()["password"])
         if res == None:
             return jsn(0,"Not Found")
-
         resp = c_user.getProfile(str(res[0]))
-
         return jsonify(id_user=resp[0],nama=resp[1],jenis_kelamin=resp[2],email=resp[3],universitas=resp[4],no_ktm=resp[5],status_aktif=resp[6],status_akses=resp[7],status='1')
 
 
@@ -64,22 +53,14 @@ def buatAkun():
         universitas = data["universitas"]
         no_ktm = data["no_ktm"]
         res = c_user.buatAkun(nama,jenis_kelamin,email,password,universitas,no_ktm)
-        if res:
-            return jsn(1,"sukses")
-        else:
-            return jsn(0,"")
+        return jsn(1,"sukses") if res else jsn(0,"")
             
 
 @app.route('/hapusAkun',methods=['POST'])
 def hapusAkun():
     with User() as c_user:
-        data = request.get_json()
-        id_user = data["id_user"]
-        res = c_user.hapusAkun(id_user)
-        if res:
-            return jsn(1,"sukses")
-        else:
-            return jsn(0,"")
+        res = c_user.hapusAkun(request.get_json()["id_user"])
+        return jsn(1,"sukses") if res else jsn(0,"")
         
 
 @app.route('/updateAkun',methods=['POST'])
@@ -93,10 +74,7 @@ def updateAKun():
         no_ktm = data["no_ktm"]
         
         res = c_user.updateAkun(id_user, nama, "", email, universitas, no_ktm, "")
-        if res:
-            return jsn(1,"sukses")
-        else:
-            return jsn(0,"")
+        return jsn(1,"sukses") if res else jsn(0,"")
 
 
 @app.route('/updateLomba',methods=['POST'])
@@ -114,21 +92,15 @@ def updateLomba():
         kategori = data["kategori"]
         id_user = data["id_user"]
         res = c_lomba.updateLomba( id_lomba, nama_lomba, deskripsi, tanggal_mulai, tanggal_ditutup, tempat, biaya, max_anggota,kategori, id_user)
-        if res=="sukses":
-            return jsn(1,"sukses")
-        else:
-            return jsn(0,res)
+      
+        return jsn(1,"sukses") if res=="sukses" else jsn(0,res)
 
 @app.route('/hapusLomba',methods=['POST'])
 def hapusLomba():
     with Lomba() as c_lomba:
-        data = request.get_json()
-        id_lomba = data["id_lomba"]
-        res = c_lomba.hapusLomba(id_lomba)
-        if res == "sukses":
-            return jsn(1,"sukses")
-        else:
-            return jsn(0,res[0])
+        res = c_lomba.hapusLomba(request.get_json()["id_lomba"])
+    
+        return jsn(1,"sukses") if res=="sukses" else jsn(0,res[0])
 
 
 @app.route('/buatLomba',methods=['POST'])
@@ -145,10 +117,7 @@ def buatLomba():
         kategori = data["kategori"]
         id_user = data["id_user"]
         res = c_lomba.buatLomba(nama_lomba, deskripsi, tanggal_mulai, tanggal_ditutup, tempat, biaya, max_anggota, kategori, id_user)
-        if res=="sukses":
-            return jsn(1,"sukses")
-        else:
-            return jsn(0,res)
+        return jsn(1,"sukses") if res=="sukses" else jsn(0,res)
 
 @app.route('/daftarLomba',methods=['POST'])
 def daftarLomba():
@@ -158,10 +127,8 @@ def daftarLomba():
         id_lomba = data["id_lomba"]
         nama_tim = data["nama_tim"]
         res = c_adm.daftarLomba(id_ketua, id_lomba, nama_tim)
-        if res=="sukses":
-            return jsn(1,"sukses")
-        else:
-            return jsn(0,res)
+
+        return jsn(1,"sukses") if res=="sukses" else jsn(0,res)
 
 @app.route('/tambahAnggota',methods=['POST'])
 def tambahAnggota():
@@ -170,10 +137,9 @@ def tambahAnggota():
         id_adm = data["id_adm"]
         id_anggota = data["id_anggota"]
         res = c_anggota.tambahAnggota(id_adm, id_anggota)
-        if res=="sukses":
-            return jsn(1,"sukses")
-        else:
-            return jsn(0,res)
+
+        return jsn(1,"sukses") if res=="sukses" else jsn(0,res)
+
 
 @app.route('/hapusAnggota',methods=['POST'])
 def hapusAnggota():
@@ -182,10 +148,8 @@ def hapusAnggota():
         id_adm = data["id_adm"]
         id_anggota = data["id_anggota"]
         res = c_anggota.hapusAnggota(id_adm, id_anggota)
-        if res=="sukses":
-            return jsn(1,"sukses")
-        else:
-            return jsn(0,res)
+
+        return jsn(1,"sukses") if res=="sukses" else jsn(0,res)
 
 @app.route('/getAnggota',methods=['POST'])
 def getAnggota():
@@ -205,10 +169,9 @@ def updateStatusBayar():
         id_lomba = data["id_lomba"]
         status_pembayaran = data["status_pembayaran"]
         res = c_adm.updateStatusBayar(id_ketua, id_lomba,status_pembayaran)
-        if res=="sukses":
-            return jsn(1,"sukses")
-        else:
-            return jsn(0,res)
+        
+        return jsn(1,"sukses") if res=="sukses" else jsn(0,res)
+
 
 @app.route('/getStatusBayar',methods=['POST'])
 def getStatusBayar():
@@ -263,10 +226,9 @@ def tambahChat():
         pesan = data["pesan"]
         res = c_chat.tambahChat( id_pengirim, id_penerima, pesan)
         # return status
-        if res:
-            return jsn(1,"OK")
-        else:
-            return jsn(0,"ERR")
+         
+        return jsn(1,"OK") if res else jsn(0,"ERR")
+
 
 @app.route('/hapusChat',methods=['POST'])
 def hapusChat():
@@ -274,10 +236,9 @@ def hapusChat():
         data = request.get_json()
         id_chat = data["id_chat"]
         res = c_chat.hapusChat(id_chat)
-        if res:
-            return jsn(1,"OK")
-        else:
-            return jsn(0,"ERR")
+        
+        return jsn(1,"OK") if res else jsn(0,"ERR")
+
 
 @app.route('/getChat',methods=['POST'])
 def getChat():
@@ -321,18 +282,16 @@ def ubahPassword():
         passbaru = data["passbaru"]
         
         res = c_user.ubahPassword(id_user, passlama, passbaru)
-        if res:
-            return jsn(1,"sukses")
-        else:
-            # berarti passlama salah
-            return jsn(0,"")
+       
+        return jsn(1,"sukses") if res else jsn(0,"")
+
 
 @app.route('/getLombaSaya',methods=['POST'])
 def getLombaSaya():
-    with Anggota_lomba() as anggota_lomba:
+    with Lomba() as c_lomba:
         data = request.get_json()
         id_user = data["id_anggota"]
-        resp = anggota_lomba.getLombaSaya(id_user)
+        resp = c_lomba.getLombaSaya(id_user)
         list_lomba = [{"id_lomba":res[0],"nama_lomba":res[1],"deadline":res[2]} for res in resp]
         return jsonify(list_lomba)
 
@@ -363,4 +322,3 @@ def getPhoto(jenis_foto,nama_foto):
     return send_file(file_location,mimetype='image/jpeg')
 
 
-    # http://flask.pocoo.org/docs/1.0/patterns/fileuploads/

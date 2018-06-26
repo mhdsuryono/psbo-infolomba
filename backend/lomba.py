@@ -102,6 +102,26 @@ class Lomba(Database):
         res = self.cursor.fetchall()
         return res
 
+    def getLombaByAdm(self, id_adm):
+        sql = 'select id_lomba from adm_lomba where id_adm='+str(id_adm)+';'
+        self.cursor.execute(sql)
+        res = self.cursor.fetchone()[0]
+        return res
+
+    def getLombaSaya(self,id_anggota):
+        sql = 'select id_adm from anggota_lomba where id_anggota='+str(id_anggota)+';'
+        self.cursor.execute(sql)
+        list_id_adm = self.cursor.fetchall()
+        list_id_lomba = []
+        hasil = []
+        for id_adm in list_id_adm:
+            list_id_lomba.append(self.getLombaByAdm(id_adm[0]))
+        
+        for id_lomba in list_id_lomba:
+            res = self.getLombaIdLomba(id_lomba)[0]
+            hasil.append([res[0],res[1],res[5]])
+        print hasil
+        return hasil
 
 # coba = Lomba()
 # coba.buatLomba("lomba catur","main catur dan lain-lain","2017-06-15 09:34:21","2017-08-15 09:00:00","2017-06-15","IPB",2000,2)

@@ -1,4 +1,4 @@
-from __future__ import with_statement
+
 
 from lomba import Lomba
 
@@ -7,7 +7,7 @@ from db import Database
 
 
 
-class Anggota_lomba(Database):
+class Anggota_lomba(Database,Lomba):
         
     def tambahAnggota(self, id_adm,  id_anggota):
         sql='insert into anggota_lomba(id_adm, id_anggota) values ('+str(id_adm)+','+str(id_anggota)+')'
@@ -41,29 +41,7 @@ class Anggota_lomba(Database):
         res = self.cursor.fetchall()
         return [str(x[0]) for x in res]
 
-    def getLombaSaya(self,id_anggota):
-        sql = 'select id_adm from anggota_lomba where id_anggota='+str(id_anggota)+';'
-        self.cursor.execute(sql)
-        list_id_adm = self.cursor.fetchall()
-        list_id_lomba = []
-        hasil = []
-        for id_adm in list_id_adm:
-            list_id_lomba.append(self.getLombaByAdm(id_adm[0]))
-        
-        for id_lomba in list_id_lomba:
-            with Lomba() as c_lomba:
-                res = c_lomba.getLombaIdLomba(id_lomba)[0]
-                print "---------------",res
-                hasil.append([res[0],res[1],res[5]])
-        print hasil
-        return hasil
 
-
-    def getLombaByAdm(self, id_adm):
-        sql = 'select id_lomba from adm_lomba where id_adm='+str(id_adm)+';'
-        self.cursor.execute(sql)
-        res = self.cursor.fetchone()[0]
-        return res
 
 # with Anggota_lomba() as ang:
 #     ang.getAnggota(4)
