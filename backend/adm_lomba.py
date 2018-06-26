@@ -21,7 +21,7 @@ class Adm_lomba:
         sql='insert into adm_lomba(id_ketua, id_lomba, nama_tim, status_penyisihan) values ('+val+')' 
         
         # cek duplikat
-        self.cursor.execute('select count(*) from adm_lomba where id_ketua="'+str(id_ketua)+'"')
+        self.cursor.execute('select count(*) from adm_lomba where id_ketua="'+str(id_ketua)+'" and id_lomba="'+str(id_lomba)+'"')
         num_count = self.cursor.fetchone()[0]
         if num_count>0:
             return "duplicate ketua"
