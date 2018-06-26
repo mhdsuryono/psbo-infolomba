@@ -1,17 +1,6 @@
-import MySQLdb
+from db import Database
 
-class User:
-    # add db.close() after end
-    def __init__(self):
-        self.db = MySQLdb.connect("localhost","root","","lombakampus")
-        
-
-    def __enter__(self):
-        self.cursor = self.db.cursor()
-        return self
-
-    def __exit__(self,*arg):
-        self.cursor.close()
+class User(Database):
 
     def buatAkun(self,nama, jenis_kelamin, email, password, universitas, no_ktm ):
         status_aktif = '1'

@@ -1,17 +1,6 @@
-import MySQLdb
+from db import Database
 import datetime
-class Lomba:
-    def __init__(self):
-        self.db = MySQLdb.connect("localhost","root","","lombakampus")
-        
-
-    def __enter__(self):
-        self.cursor = self.db.cursor()
-        return self
-
-    def __exit__(self,*arg):
-        self.cursor.close()
-
+class Lomba(Database):
     def buatLomba(self, nama_lomba, deskripsi, tanggal_mulai, tanggal_ditutup, tempat, biaya, max_anggota, kategori,id_user):
         tanggal_mulai = "timestamp('"+ tanggal_mulai +"')"
         tanggal_dibuat = "timestamp('"+ str(datetime.datetime.now()) +"')"
@@ -103,6 +92,14 @@ class Lomba:
         self.cursor.execute(sql)
         res = self.cursor.fetchall()
 
+        return res
+
+    def getLombaIdLomba(self,id_lomba):
+        tanggal_sekarang = "timestamp('"+ str(datetime.datetime.now()) +"')"
+        sql = 'select * from lomba where tanggal_ditutup>'+tanggal_sekarang+' and id_lomba="'+str(id_lomba)+'";'
+        print "dari sql",sql
+        self.cursor.execute(sql)
+        res = self.cursor.fetchall()
         return res
 
 

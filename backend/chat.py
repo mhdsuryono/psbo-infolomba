@@ -1,18 +1,11 @@
-import MySQLdb
+
 import datetime
+from db import Database
+# inherit dari database
 
 from user import User
-class Chat:
-    def __init__(self):
-        self.db = MySQLdb.connect("localhost","root","","lombakampus")
-        
-    def __enter__(self):
-        self.cursor = self.db.cursor()
-        return self
 
-    def __exit__(self,*arg):
-        self.cursor.close()
-
+class Chat(Database):
     def tambahChat(self, id_pengirim, id_penerima, pesan):
         # tanggal auto
         tanggal = datetime.datetime.now().strftime("timestamp('%Y-%m-%d %H:%M:%S')")

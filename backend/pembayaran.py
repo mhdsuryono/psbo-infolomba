@@ -1,17 +1,6 @@
-import MySQLdb
+from db import Database
 
-class Pembayaran:
-    def __init__(self):
-        self.db = MySQLdb.connect("localhost","root","","lombakampus")
-        
-
-    def __enter__(self):
-        self.cursor = self.db.cursor()
-        return self
-
-    def __exit__(self,*arg):
-        self.cursor.close()
-
+class Pembayaran(Database):
     def updateStatusBayar(self, id_ketua, id_lomba,status_pembayaran):
         sql = 'update pembayaran set status_pembayaran='+str(status_pembayaran)+' where id_ketua='+str(id_ketua)+' and id_lomba='+str(id_lomba)+' ;'
 
