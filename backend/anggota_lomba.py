@@ -6,7 +6,6 @@ from db import Database
 
 
 
-class Anggota_lomba:
 
 class Anggota_lomba(Database):
         
