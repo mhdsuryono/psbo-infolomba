@@ -35,7 +35,9 @@ def ping():
 @app.route('/login',methods=['POST'])
 def login():
     with User() as c_user:
-        res = c_user.login(request.get_json()["email"],request.get_json()["password"])
+        print dir(request)
+        rj = request.get_json()
+        res = c_user.login(rj['email'],rj['password'])
         if res == None:
             return jsn(0,"Not Found")
         resp = c_user.getProfile(str(res[0]))
@@ -45,14 +47,8 @@ def login():
 @app.route('/buatAkun',methods=['POST'])
 def buatAkun():
     with User() as c_user:
-        data = request.get_json()
-        nama = data["nama"]
-        jenis_kelamin = data["jenis_kelamin"]
-        email = data["email"]
-        password = data["password"]
-        universitas = data["universitas"]
-        no_ktm = data["no_ktm"]
-        res = c_user.buatAkun(nama,jenis_kelamin,email,password,universitas,no_ktm)
+        rj = request.get_json()
+        res = c_user.buatAkun(rj['nama'],rj['jenis_kelamin'],rj['email'],rj['password'],rj['universitas'],rj['no_ktm'])
         return jsn(1,"sukses") if res else jsn(0,"")
             
 
@@ -122,21 +118,16 @@ def buatLomba():
 @app.route('/daftarLomba',methods=['POST'])
 def daftarLomba():
     with Adm_lomba() as c_adm:
-        data = request.get_json()
-        id_ketua = data["id_ketua"]
-        id_lomba = data["id_lomba"]
-        nama_tim = data["nama_tim"]
-        res = c_adm.daftarLomba(id_ketua, id_lomba, nama_tim)
+        rj = request.get_json()
+        res = c_adm.daftarLomba(rj['id_ketua'], rj['id_lomba'], rj['nama_tim'])
 
         return jsn(1,"sukses") if res=="sukses" else jsn(0,res)
 
 @app.route('/tambahAnggota',methods=['POST'])
 def tambahAnggota():
     with Anggota_lomba() as c_anggota:
-        data = request.get_json()
-        id_adm = data["id_adm"]
-        id_anggota = data["id_anggota"]
-        res = c_anggota.tambahAnggota(id_adm, id_anggota)
+        rj = request.get_json()
+        res = c_anggota.tambahAnggota(rj['id_adm'], rj['id_anggota'])
 
         return jsn(1,"sukses") if res=="sukses" else jsn(0,res)
 
@@ -144,19 +135,16 @@ def tambahAnggota():
 @app.route('/hapusAnggota',methods=['POST'])
 def hapusAnggota():
     with Anggota_lomba() as c_anggota:
-        data = request.get_json()
-        id_adm = data["id_adm"]
-        id_anggota = data["id_anggota"]
-        res = c_anggota.hapusAnggota(id_adm, id_anggota)
+        rj = request.get_json()
+        res = c_anggota.hapusAnggota(rj['id_adm'], rj['id_anggota'])
 
         return jsn(1,"sukses") if res=="sukses" else jsn(0,res)
 
 @app.route('/getAnggota',methods=['POST'])
 def getAnggota():
     with Anggota_lomba() as c_anggota:
-        data = request.get_json()
-        id_adm = data["id_adm"]
-        res = c_anggota.getAnggota(id_adm)
+        rj = request.get_json()
+        res = c_anggota.getAnggota(rj['id_adm'])
         
         return jsn_anggota(1,res)
         
@@ -164,11 +152,8 @@ def getAnggota():
 @app.route('/updateStatusBayar',methods=['POST'])
 def updateStatusBayar():
     with Adm_lomba() as c_adm:
-        data = request.get_json()
-        id_ketua = data["id_ketua"]
-        id_lomba = data["id_lomba"]
-        status_pembayaran = data["status_pembayaran"]
-        res = c_adm.updateStatusBayar(id_ketua, id_lomba,status_pembayaran)
+        rj = request.get_json()
+        res = c_adm.updateStatusBayar(rj['id_ketua'], rj['id_lomba'],rj['status_pembayaran'])
         
         return jsn(1,"sukses") if res=="sukses" else jsn(0,res)
 
@@ -211,20 +196,16 @@ def getLombaId():
 @app.route('/getPendaftar',methods=['POST'])
 def getPendaftar():
     with Lomba() as lomba:
-        data = request.get_json()
-        id_lomba = data["id_lomba"]
-        resp = lomba.getPendaftar(id_lomba)
+        rj = request.get_json()
+        resp = lomba.getPendaftar(rj['id_lomba'])
         list_info = [{"id_adm":res[0],"id_ketua":res[1]} for res in resp]
         return jsonify(list_info)
 
 @app.route('/tambahChat',methods=['POST'])
 def tambahChat():
     with Chat() as c_chat:
-        data = request.get_json()
-        id_pengirim = data["id_pengirim"]
-        id_penerima = data["id_penerima"]
-        pesan = data["pesan"]
-        res = c_chat.tambahChat( id_pengirim, id_penerima, pesan)
+        rj = request.get_json()
+        res = c_chat.tambahChat( rj['id_pengirim'], rj['id_penerima'], rj['pesan'])
         # return status
          
         return jsn(1,"OK") if res else jsn(0,"ERR")
@@ -253,9 +234,8 @@ def getChat():
 @app.route('/semuaChat',methods=['POST'])
 def semuaChat():
     with Chat() as c_chat:
-        data = request.get_json()
-        id_user = data["id_user"]
-        list_id,list_nama = c_chat.semuaChat(id_user)
+        rj = request.get_json()
+        list_id,list_nama = c_chat.semuaChat(rj['id_user'])
         resp = zip(list_id,list_nama)
 
         return jsonify(status=str(1),id_user=resp)
@@ -300,11 +280,10 @@ def getLombaSaya():
 def uploadPhoto(jenis_foto,nama_foto):
     upload_folder = 'uploads'
     jenis_foto = str(jenis_foto)
-    nama_foto = str(nama_foto)
     if 'img' not in request.files:
         return "no file"
     file_get = request.files['img']
-    file_location = upload_folder+"/"+jenis_foto+"/"+nama_foto
+    file_location = upload_folder+"/"+jenis_foto+"/"+str(nama_foto)
     
     if not os.path.exists(os.path.dirname(file_location)):
         os.makedirs(os.path.dirname(file_location))
