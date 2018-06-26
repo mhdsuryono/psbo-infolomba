@@ -295,9 +295,10 @@ def semuaChat():
     with Chat() as c_chat:
         data = request.get_json()
         id_user = data["id_user"]
-        resp = c_chat.semuaChat(id_user)
-        return jsn_anggota(1,resp)
+        list_id,list_nama = c_chat.semuaChat(id_user)
+        resp = zip(list_id,list_nama)
 
+        return jsonify(status=str(1),id_user=resp)
 
 @app.route('/getProfile',methods=['POST'])
 def getProfile():

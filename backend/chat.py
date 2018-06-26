@@ -1,6 +1,7 @@
 import MySQLdb
 import datetime
 
+from user import User
 class Chat:
     def __init__(self):
         self.db = MySQLdb.connect("localhost","root","","lombakampus")
@@ -62,8 +63,16 @@ class Chat:
             set_id.add(int(i[0]))
             set_id.add(int(i[1]))
         list_id = list(set_id)
+        list_nama = []
         list_id.remove(int(id_user))
-        return list_id
+        self.cursor.close()
+        self.cursor = self.db.cursor()
+
+        for id_user in list_id:
+            with User() as c_user:
+                resp = c_user.getProfile(id_user)
+                list_nama.append(resp[1])
+        return list_id,list_nama
 
     # def semuaChat(self, id)
         # mengambil semua id2 yang pernah chat dengan kita(id)
