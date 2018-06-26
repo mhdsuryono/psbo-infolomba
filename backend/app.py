@@ -335,9 +335,9 @@ def uploadPhoto(jenis_foto,nama_foto):
     upload_folder = 'uploads'
     jenis_foto = str(jenis_foto)
     nama_foto = str(nama_foto)
-    if 'file' not in request.files:
+    if 'img' not in request.files:
         return "no file"
-    file_get = request.files['file']
+    file_get = request.files['img']
     file_location = upload_folder+"/"+jenis_foto+"/"+nama_foto
     
     if not os.path.exists(os.path.dirname(file_location)):
