@@ -1,8 +1,21 @@
 from __future__ import with_statement
 
+<<<<<<< HEAD
 from db import Database
 from anggota_lomba import Anggota_lomba
 
+=======
+from anggota_lomba import Anggota_lomba
+
+
+class Adm_lomba:
+    def __init__(self):
+        self.db = MySQLdb.connect("localhost","root","","lombakampus")
+        
+    def __enter__(self):
+        self.cursor = self.db.cursor()
+        return self
+>>>>>>> 3a9a96438d4eccb2918a02d4505c11549b12887f
 
 class Adm_lomba(Database):
 
