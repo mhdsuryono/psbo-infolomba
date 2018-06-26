@@ -5,7 +5,6 @@ from lomba import Lomba
 from chat import Chat
 from adm_lomba import Adm_lomba
 from anggota_lomba import Anggota_lomba
-from pembayaran import Pembayaran
 
 from flask_cors import CORS
 import os
@@ -200,12 +199,12 @@ def getAnggota():
 
 @app.route('/updateStatusBayar',methods=['POST'])
 def updateStatusBayar():
-    with Pembayaran() as pembayaran:
+    with Adm_lomba() as c_adm:
         data = request.get_json()
         id_ketua = data["id_ketua"]
         id_lomba = data["id_lomba"]
         status_pembayaran = data["status_pembayaran"]
-        res = pembayaran.updateStatusBayar(id_ketua, id_lomba,status_pembayaran)
+        res = c_adm.updateStatusBayar(id_ketua, id_lomba,status_pembayaran)
         if res=="sukses":
             return jsn(1,"sukses")
         else:
@@ -213,11 +212,11 @@ def updateStatusBayar():
 
 @app.route('/getStatusBayar',methods=['POST'])
 def getStatusBayar():
-    with Pembayaran() as pembayaran:
+    with Adm_lomba() as c_adm:
         data = request.get_json()
         id_ketua = data["id_ketua"]
         id_lomba = data["id_lomba"]
-        res = pembayaran.getStatusBayar(id_ketua, id_lomba)
+        res = c_adm.getStatusBayar(id_ketua, id_lomba)
         return jsn(1,res)
 
 
