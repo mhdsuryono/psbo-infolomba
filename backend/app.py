@@ -235,10 +235,10 @@ def getChat():
 def semuaChat():
     with Chat() as c_chat:
         rj = request.get_json()
-        list_id,list_nama = c_chat.semuaChat(rj['id_user'])
-        resp = zip(list_id,list_nama)
+        resp = c_chat.semuaChat(rj['id_user'])
+     
 
-        return jsonify(status=str(1),id_user=resp)
+        return jsonify(status=str(1),list=resp)
 
 @app.route('/getProfile',methods=['POST'])
 def getProfile():
