@@ -197,7 +197,7 @@ def getLombaId():
 def getPendaftar():
     with Lomba() as lomba:
         rj = request.get_json()
-        resp = lomba.getPendaftar(string(rj['id_lomba']))
+        resp = lomba.getPendaftar(str(rj['id_lomba']))
         list_info = [{"id_adm":res[0],"id_ketua":res[1]} for res in resp]
         return jsonify(list_info)
 
