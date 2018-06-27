@@ -1,14 +1,14 @@
 from db import Database
 import datetime
 class Lomba(Database):
-    def buatLomba(self, nama_lomba, deskripsi, tanggal_mulai, tanggal_ditutup, tempat, biaya, max_anggota, kategori,id_user):
+    def buatLomba(self, nama_lomba, deskripsi, tanggal_mulai, tanggal_ditutup, tempat, biaya, max_anggota, kategori,id_user,aturan,hadiah):
         tanggal_mulai = "timestamp('"+ tanggal_mulai +"')"
         tanggal_dibuat = "timestamp('"+ str(datetime.datetime.now()) +"')"
         tanggal_ditutup = "timestamp('"+ tanggal_ditutup +"')"
-        list_arg = [nama_lomba, deskripsi, tempat,kategori ]
+        list_arg = [nama_lomba, deskripsi, tempat,kategori ,str(aturan),str(hadiah)]
         list_arg2 = [tanggal_dibuat, tanggal_mulai, tanggal_ditutup, str(biaya),str(max_anggota), str(id_user)]
         val = '","'.join(list_arg)+'",' + ','.join(list_arg2)
-        sql='insert into lomba(nama_lomba, deskripsi, tempat,kategori, tanggal_dibuat, tanggal_mulai, tanggal_ditutup, biaya,max_anggota, id_user) values ("'+val+')' 
+        sql='insert into lomba(nama_lomba, deskripsi, tempat,kategori,aturan,hadiah, tanggal_dibuat, tanggal_mulai, tanggal_ditutup, biaya,max_anggota, id_user) values ("'+val+')' 
         # print sql
         try:
             self.cursor.execute(sql)
@@ -30,8 +30,8 @@ class Lomba(Database):
         # delete anggota juga nanti
         return "sukses"
 
-    def updateLomba(self, id_lomba, nama_lomba, deskripsi, tanggal_mulai, tanggal_ditutup, tempat, biaya, max_anggota, kategori, id_user):
-        list_arg=[nama_lomba, deskripsi, tanggal_mulai, tanggal_ditutup, tempat, str(biaya),  str(max_anggota), kategori, str(id_user)]
+    def updateLomba(self, id_lomba, nama_lomba, deskripsi, tanggal_mulai, tanggal_ditutup, tempat, biaya, max_anggota, kategori, id_user,aturan,hadiah):
+        list_arg=[nama_lomba, deskripsi, tanggal_mulai, tanggal_ditutup, tempat, str(biaya),  str(max_anggota), kategori, str(id_user),str(aturan),str(hadiah)]
         val_arg=[]
         if list_arg[0]!="":
             val_arg.append("nama_lomba='"+nama_lomba+"'")
@@ -53,6 +53,10 @@ class Lomba(Database):
             val_arg.append("kategori='"+kategori+"'")
         if list_arg[8]!="":
             val_arg.append("id_user='"+str(id_user)+"'")
+        if list_arg[9]!="":
+            val_arg.append("aturan='"+str(aturan)+"'")
+        if list_arg[10]!="":
+            val_arg.append("hadiah='"+str(hadiah)+"'")
 
         val=','.join(val_arg)
         sql='update lomba set '+val+' where id_lomba='+str(id_lomba)+';'

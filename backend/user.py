@@ -2,13 +2,13 @@ from db import Database
 
 class User(Database):
 
-    def buatAkun(self,nama, jenis_kelamin, email, password, universitas, no_ktm ):
+    def buatAkun(self,nama, jenis_kelamin, email, password, universitas, no_ktm ,no_hp):
         status_aktif = '1'
         status_akses = '0'
 
-        list_arg = [nama,jenis_kelamin,email,universitas,no_ktm,password,status_aktif,status_akses]
+        list_arg = [nama,jenis_kelamin,email,universitas,no_ktm,password,status_aktif,status_akses,str(no_hp)]
         val = '","'.join(list_arg)
-        sql='insert into user(nama,jenis_kelamin,email,universitas,nomor_ktm,password,status_aktif,status_akses) values ("'+val+'")' 
+        sql='insert into user(nama,jenis_kelamin,email,universitas,nomor_ktm,password,status_aktif,status_akses,no_hp) values ("'+val+'")' 
         
         # cek duplikat
         self.cursor.execute('select count(*) from user where email="'+email+'"')
@@ -36,8 +36,8 @@ class User(Database):
             self.db.rollback()
             return False
 
-    def updateAkun(self,id_user, nama, jenis_kelamin, email, universitas, no_ktm, password):
-        list_arg=[nama, jenis_kelamin, email, universitas, no_ktm, password]
+    def updateAkun(self,id_user, nama, jenis_kelamin, email, universitas, no_ktm, password,no_hp):
+        list_arg=[nama, jenis_kelamin, email, universitas, no_ktm, password,str(no_hp)]
         val_arg=[]
         if list_arg[0]!="":
             val_arg.append("nama='"+nama+"'")
@@ -51,6 +51,8 @@ class User(Database):
             val_arg.append("nomor_ktm='"+no_ktm+"'")
         if list_arg[5]!="":
             val_arg.append("password='"+password+"'")
+        if list_arg[5]!="":
+            val_arg.append("no_hp='"+str(no_hp)+"'")
 
         val=','.join(val_arg)
         sql='update user set '+val+' where id_user='+str(id_user)+';'
