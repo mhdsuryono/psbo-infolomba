@@ -144,9 +144,9 @@ def hapusAnggota():
 def getAnggota():
     with Anggota_lomba() as c_anggota:
         rj = request.get_json()
-        res = c_anggota.getAnggota(rj['id_adm'])
-        
-        return jsonify(status=str(1),id_user=res)
+        resp = c_anggota.getAnggota(rj['id_adm'])
+        list_chat = [{"id_user":res[0],"nama":res[1]} for res in resp]
+        return jsonify(status=str(1),list=list_chat)
         
 
 @app.route('/updateStatusBayar',methods=['POST'])
