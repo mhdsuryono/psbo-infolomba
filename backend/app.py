@@ -35,7 +35,6 @@ def ping():
 @app.route('/login',methods=['POST'])
 def login():
     with User() as c_user:
-        print dir(request)
         rj = request.get_json()
         res = c_user.login(rj['email'],rj['password'])
         if res == None:
