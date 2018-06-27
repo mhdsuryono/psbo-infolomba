@@ -21,8 +21,8 @@ def jsn(val,mess):
 def jsn_login(val,mess):
     return jsonify(status=str(val),id_user=str(mess))
 
-def jsn_anggota(val,res):
-    return jsonify(status=str(val),id_user=res)
+
+    
 
 @app.route('/')
 def  home():
@@ -146,7 +146,7 @@ def getAnggota():
         rj = request.get_json()
         res = c_anggota.getAnggota(rj['id_adm'])
         
-        return jsn_anggota(1,res)
+        return jsonify(status=str(1),id_user=res)
         
 
 @app.route('/updateStatusBayar',methods=['POST'])
