@@ -103,9 +103,9 @@ class Lomba(Database):
         return res
 
     def getLombaByAdm(self, id_adm):
-        sql = 'select id_lomba from adm_lomba where id_adm='+str(id_adm)+';'
+        sql = 'select id_lomba,nama_tim from adm_lomba where id_adm='+str(id_adm)+';'
         self.cursor.execute(sql)
-        res = self.cursor.fetchone()[0]
+        res = self.cursor.fetchone()
         return res
 
     def getLombaSaya(self,id_anggota):
@@ -113,14 +113,17 @@ class Lomba(Database):
         self.cursor.execute(sql)
         list_id_adm = self.cursor.fetchall()
         list_id_lomba = []
+        list_nama_tim = []
         hasil = []
         for id_adm in list_id_adm:
-            list_id_lomba.append(self.getLombaByAdm(id_adm[0]))
+            adm_resp = self.getLombaByAdm(id_adm[0])
+            list_id_lomba.append(adm_resp[0])
+            list_nama_tim.append(adm_resp[1])
+        
         pointer = 0
         for id_lomba in list_id_lomba:
             res = self.getLombaIdLomba(id_lomba)[0]
-            hasil.append([list_id_adm[pointer][0],res[0],res[1],res[5]])
-            pointer+=1
+            hasil.append([list_id_adm[0][pointer],res[0],res[1],res[5],list_nama_tim[pointer]])
         
         return hasil
 
