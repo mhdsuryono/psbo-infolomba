@@ -39,10 +39,10 @@ class Lomba(Database):
             val_arg.append("deskripsi='"+deskripsi+"'")
         if list_arg[2]!="":
             tanggal_mulai = "timestamp('"+ tanggal_mulai +"')"
-            val_arg.append("tanggal_mulai='"+tanggal_mulai+"'")
+            val_arg.append("tanggal_mulai="+tanggal_mulai+"")
         if list_arg[3]!="":
             tanggal_ditutup = "timestamp('"+ tanggal_ditutup +"')"
-            val_arg.append("tanggal_ditutup='"+tanggal_ditutup+"'")
+            val_arg.append("tanggal_ditutup="+tanggal_ditutup+"")
         if list_arg[4]!="":
             val_arg.append("tempat='"+tempat+"'")
         if list_arg[5]!="":
@@ -56,7 +56,7 @@ class Lomba(Database):
 
         val=','.join(val_arg)
         sql='update lomba set '+val+' where id_lomba='+str(id_lomba)+';'
-
+        print sql
         try:
             self.cursor.execute(sql)
             self.db.commit()
