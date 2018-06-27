@@ -116,11 +116,12 @@ class Lomba(Database):
         hasil = []
         for id_adm in list_id_adm:
             list_id_lomba.append(self.getLombaByAdm(id_adm[0]))
-        
+        pointer = 0
         for id_lomba in list_id_lomba:
             res = self.getLombaIdLomba(id_lomba)[0]
-            hasil.append([res[0],res[1],res[5]])
-        print hasil
+            hasil.append([list_id_adm[pointer][0],res[0],res[1],res[5]])
+            pointer+=1
+        
         return hasil
 
 # coba = Lomba()
