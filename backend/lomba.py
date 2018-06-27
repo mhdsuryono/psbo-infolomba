@@ -1,4 +1,4 @@
-from db import Database
+from db import *
 import datetime
 class Lomba(Database):
     def buatLomba(self, nama_lomba, deskripsi, tanggal_mulai, tanggal_ditutup, tempat, biaya, max_anggota, kategori,id_user,aturan,hadiah):
@@ -71,24 +71,18 @@ class Lomba(Database):
 
     def getLomba(self):
         tanggal_sekarang = "timestamp('"+ str(datetime.datetime.now()) +"')"
-        sql = 'select * from lomba where tanggal_ditutup>'+tanggal_sekarang+';'
-        self.cursor.execute(sql)
-        res = self.cursor.fetchall()
+        res = DB_Lomba.select().where(DB_Lomba.tanggal_ditutup > tanggal_sekarang)
+
         return res
 
     def getLombaKategori(self,kategori):
         tanggal_sekarang = "timestamp('"+ str(datetime.datetime.now()) +"')"
-        sql = 'select * from lomba where tanggal_ditutup>'+tanggal_sekarang+' and kategori="'+kategori+'";'
-        print (sql)
-        self.cursor.execute(sql)
-        res = self.cursor.fetchall()
+        res = DB_Lomba.select().where(DB_Lomba.tanggal_ditutup > tanggal_sekarang).where(DB_Lomba.kategori==kategori)
         return res
 
     def getLombaId(self,id_user):
         tanggal_sekarang = "timestamp('"+ str(datetime.datetime.now()) +"')"
-        sql = 'select * from lomba where id_user='+str(id_user)+';'
-        self.cursor.execute(sql)
-        res = self.cursor.fetchall()
+        res = DB_Lomba.select().where(DB_Lomba.tanggal_ditutup > tanggal_sekarang).where(DB_Lomba.id_user==id_user)
         return res
 
     def getPendaftar(self,id_lomba):

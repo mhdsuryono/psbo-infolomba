@@ -39,8 +39,8 @@ def login():
         res = c_user.login(rj['email'],rj['password'])
         if res == None:
             return jsn(0,"Not Found")
-        resp = c_user.getProfile(str(res[0]))
-        return jsonify(id_user=resp[0],nama=resp[1],jenis_kelamin=resp[2],email=resp[3],universitas=resp[4],no_ktm=resp[5],status_aktif=resp[6],status_akses=resp[7],status='1')
+        # resp = c_user.getProfile(str(res.id_user))
+        return jsonify(id_user=res.id_user,nama=res.nama,jenis_kelamin=res.jenis_kelamin,email=res.email,universitas=res.universitas,no_ktm=res.nomor_ktm,status_aktif=res.status_aktif,status_akses=res.status_akses,status='1')
 
 
 @app.route('/buatAkun',methods=['POST'])
@@ -176,7 +176,7 @@ def getStatusBayar():
 def getLomba():
     with Lomba() as lomba:
         resp = lomba.getLomba()
-        list_lomba = [{"id_lomba":res[0],"nama_lomba":res[1],"deskripsi":res[2],"tanggal_dibuat":res[3],"tanggal_mulai":res[4],"tanggal_ditutup":res[5],"tempat":res[6],"biaya":res[7],"id_user":res[8],"max_anggota":res[9],"kategori":res[10],"aturan":res[11],"hadiah":res[12]} for res in resp]
+        list_lomba = [{"id_lomba":res.id_lomba,"nama_lomba":res.nama_lomba,"deskripsi":res.deskripsi,"tanggal_dibuat":res.tanggal_dibuat,"tanggal_mulai":res.tanggal_mulai,"tanggal_ditutup":res.tanggal_ditutup,"tempat":res.tempat,"biaya":res.biaya,"id_user":res.biaya,"max_anggota":res.max_anggota,"kategori":res.kategori,"aturan":res.aturan,"hadiah":res.hadiah} for res in resp]
         return jsonify(list_lomba)
 
 @app.route('/getLombaKategori',methods=['POST'])
@@ -185,7 +185,7 @@ def getLombaKategori():
         data = request.get_json()
         kategori = data["kategori"]
         resp = lomba.getLombaKategori(kategori)
-        list_lomba = [{"id_lomba":res[0],"nama_lomba":res[1],"deskripsi":res[2],"tanggal_dibuat":res[3],"tanggal_mulai":res[4],"tanggal_ditutup":res[5],"tempat":res[6],"biaya":res[7],"id_user":res[8],"max_anggota":res[9],"kategori":res[10],"aturan":res[11],"hadiah":res[12]} for res in resp]
+        list_lomba = [{"id_lomba":res.id_lomba,"nama_lomba":res.nama_lomba,"deskripsi":res.deskripsi,"tanggal_dibuat":res.tanggal_dibuat,"tanggal_mulai":res.tanggal_mulai,"tanggal_ditutup":res.tanggal_ditutup,"tempat":res.tempat,"biaya":res.biaya,"id_user":res.biaya,"max_anggota":res.max_anggota,"kategori":res.kategori,"aturan":res.aturan,"hadiah":res.hadiah} for res in resp]
         return jsonify(list_lomba)
 
 @app.route('/getLombaId',methods=['POST'])
@@ -194,7 +194,7 @@ def getLombaId():
         data = request.get_json()
         id_user = data["id_user"]
         resp = lomba.getLombaId(id_user)
-        list_lomba = [{"id_lomba":res[0],"nama_lomba":res[1],"deskripsi":res[2],"tanggal_dibuat":res[3],"tanggal_mulai":res[4],"tanggal_ditutup":res[5],"tempat":res[6],"biaya":res[7],"id_user":res[8],"max_anggota":res[9],"kategori":res[10],"aturan":res[11],"hadiah":res[12]} for res in resp]
+        list_lomba = [{"id_lomba":res.id_lomba,"nama_lomba":res.nama_lomba,"deskripsi":res.deskripsi,"tanggal_dibuat":res.tanggal_dibuat,"tanggal_mulai":res.tanggal_mulai,"tanggal_ditutup":res.tanggal_ditutup,"tempat":res.tempat,"biaya":res.biaya,"id_user":res.biaya,"max_anggota":res.max_anggota,"kategori":res.kategori,"aturan":res.aturan,"hadiah":res.hadiah} for res in resp]
         return jsonify(list_lomba)
 
 @app.route('/getPendaftar',methods=['POST'])

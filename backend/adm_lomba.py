@@ -1,6 +1,6 @@
 from __future__ import with_statement
 
-from db import Database
+from db import *
 from anggota_lomba import Anggota_lomba
 
 

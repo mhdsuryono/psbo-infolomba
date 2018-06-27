@@ -1,4 +1,4 @@
-from db import Database
+from db import *
 
 class User(Database):
 
@@ -69,24 +69,11 @@ class User(Database):
     #     self.cursor.execute(sql)
     #     for i in self.cursor.fetchall():
     #         print i
-    def login(self,username,password):
-        username = str(username)
-        password = str(password)
-        sql='select id_user from user where email="'+username+'" and password="'+password+'" and status_aktif=1;'
-        self.cursor.execute(sql)
-        res = self.cursor.fetchone()
-        # if res == ():
-        #     print "no"
-        # else:
-        #     print "ok"
-        #     print res
-        # print res
+    def login(self,email,password):
+        res =  DB_User.select().where(DB_User.email == str(email)).where(DB_User.password == str(password)).where(DB_User.status_aktif == 1).first()
         return res
-
     def getProfile(self,id_user):
-        sql = 'select * from user where id_user='+str(id_user)+';'
-        self.cursor.execute(sql)
-        res = self.cursor.fetchone()
+        res =  DB_User.select().where(DB_User.id_user == str(id_user)).first()
         return res
 
     def getIdByEmail(self,email):

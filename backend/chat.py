@@ -1,6 +1,6 @@
 import MySQLdb
 import datetime
-from db import Database
+from db import *
 # inherit dari database
 
 from user import User

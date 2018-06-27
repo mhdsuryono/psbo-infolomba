@@ -2,10 +2,9 @@
 
 from lomba import Lomba
 
-from db import Database
+from db import *
 
 from user import User
-
 
 class Anggota_lomba(Database,Lomba,User):
     def tambahAnggota(self, id_adm,  email):
