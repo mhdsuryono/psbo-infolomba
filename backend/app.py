@@ -127,7 +127,7 @@ def daftarLomba():
 def tambahAnggota():
     with Anggota_lomba() as c_anggota:
         rj = request.get_json()
-        res = c_anggota.tambahAnggota(rj['id_adm'], rj['id_anggota'])
+        res = c_anggota.tambahAnggota(rj['id_adm'], rj['email'])
 
         return jsn(1,"sukses") if res=="sukses" else jsn(0,res)
 
@@ -299,6 +299,8 @@ def uploadPhoto(jenis_foto,nama_foto):
 def getPhoto(jenis_foto,nama_foto):
     upload_folder = 'uploads'
     file_location = upload_folder+"/"+jenis_foto+"/"+nama_foto
-    return send_file(file_location,mimetype='image/jpeg')
-
+    try:
+        return send_file(file_location,mimetype='image/jpeg')
+    except:
+        return jsn(0,"Not Found")
 

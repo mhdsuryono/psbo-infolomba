@@ -80,12 +80,23 @@ class User(Database):
         #     print res
         # print res
         return res
+
     def getProfile(self,id_user):
         sql = 'select * from user where id_user='+str(id_user)+';'
         self.cursor.execute(sql)
         res = self.cursor.fetchone()
         return res
 
+    def getIdByEmail(self,email):
+        sql = 'select id_user from user where email="'+str(email)+'" and status_aktif=1 ;'
+        try: 
+            self.cursor.execute(sql)
+            res = self.cursor.fetchone()
+        except:
+            return "gagal"
+        if res == None:
+            return "gagal"
+        return res[0]
 
     def ubahPassword(self,id_user, passlama,passbaru):
         sql='select id_user from user where id_user="'+str(id_user)+'" and password="'+passlama+'" and status_aktif=1;'
