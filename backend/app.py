@@ -162,6 +162,7 @@ def updateStatusBayar():
 def getStatusBayar():
     with Adm_lomba() as c_adm:
         data = request.get_json()
+        print data
         id_ketua = data["id_ketua"]
         id_lomba = data["id_lomba"]
         res = c_adm.getStatusBayar(id_ketua, id_lomba)
