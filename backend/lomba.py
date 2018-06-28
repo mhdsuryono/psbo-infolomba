@@ -137,7 +137,7 @@ class Lomba(Database):
         for id_lomba in list_id_lomba:
             res = self.getLombaIdLomba(id_lomba)[0]
             hasil.append([list_id_adm[0][pointer],res[0],res[1],res[5],list_nama_tim[pointer],res[8]])
-
+            pointer+=1
         return hasil
 
 # coba = Lomba()
