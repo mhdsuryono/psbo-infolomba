@@ -51,7 +51,7 @@ class User(Database):
             val_arg.append("nomor_ktm='"+no_ktm+"'")
         if list_arg[5]!="":
             val_arg.append("password='"+password+"'")
-        if list_arg[5]!="":
+        if list_arg[6]!="":
             val_arg.append("no_hp='"+str(no_hp)+"'")
 
         val=','.join(val_arg)
