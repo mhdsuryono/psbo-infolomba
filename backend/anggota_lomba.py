@@ -28,7 +28,8 @@ class Anggota_lomba(Database,Lomba,User):
                 flag = True
             if hasil > 0:
                 flag = True
-
+        except:
+            pass
         
         if num_count>0 or flag:
             return "duplicate member"
