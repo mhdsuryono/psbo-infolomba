@@ -92,10 +92,11 @@ class Lomba(Database):
         return res
 
     def getPendaftar(self,id_lomba):
-        sql = 'select id_adm,id_ketua,nama_tim from adm_lomba where id_lomba='+id_lomba+';'
+        sql = 'select id_adm,id_ketua,nama_tim,id_lomba from adm_lomba where id_lomba='+id_lomba+';'
         self.cursor.execute(sql)
         res = self.cursor.fetchall()
 
+        sql_nama_lomba = 'select adm_lomba.id_adm,adm_lomba.id_ketua,adm_lomba.nama_tim,adm_lomba.id_lomba,lomba.nama_lomba from adm_lomba inner join lomba on adm_lomba.id_lomba=lomba.id_lomba where adm_lomba.id_lomba='+id_lomba+';'
         return res
 
     def getLombaIdLomba(self,id_lomba):

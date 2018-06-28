@@ -51,12 +51,14 @@ class Anggota_lomba(Database,Lomba,User):
         res = self.cursor.fetchall()
         self.cursor.close()
         self.cursor = self.db.cursor()
-        sql = 'select id_ketua from adm_lomba where id_adm='+str(id_adm)+';'
+        # sql = 'select id_ketua from adm_lomba where id_adm='+str(id_adm)+';'
+        sql = 'select user.nama from user inner join adm_lomba on user.id_user=adm_lomba.id_ketua where adm_lomba.id_adm='+str(id_adm)+';'
         self.cursor.execute(sql)
         res_ketua = self.cursor.fetchone()
         id_ketua = res_ketua[0]
         return res,id_ketua
 
+        # 'select adm_lomba.id_adm,adm_lomba.id_ketua,adm_lomba.nama_tim,adm_lomba.id_lomba,lomba.nama_lomba from adm_lomba inner join lomba on adm_lomba.id_lomba=lomba.id_lomba where adm_lomba.id_lomba='+id_lomba+';'
 
 
 # with Anggota_lomba() as ang:
