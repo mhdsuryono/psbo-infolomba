@@ -14,39 +14,12 @@ class Lomba(Database):
             self.cursor.execute(sql)
             self.db.commit()
 
-            self.cursor.close()
-            self.cursor = self.db.cursor()
-            
-            self.cursor.execute('select id_adm from lomba where id_user='+str(id_user)+' and nama_lomba="'+'nama_lomba'+'"')
-            id_adm = self.cursor.fetchone()[0]
-            self.tambahAnggotaId(id_adm,id_user)
             return "sukses"
         except Exception, e:
             self.db.rollback()
             return e
 
-    def tambahAnggotaId(self, id_adm,  id_anggota):
-        self.cursor.execute('select count(*) from anggota_lomba where id_adm='+str(id_adm)+' and id_anggota='+str(id_anggota)+';')
-        num_count = self.cursor.fetchone()[0]
-        sql='insert into anggota_lomba(id_adm, id_anggota) values ('+str(id_adm)+','+str(id_anggota)+')'
-        
-        self.cursor.close()
-        self.cursor = self.db.cursor()
-        self.cursor.execute('select adm_lomba.id_lomba from adm_lomba inner join anggota_lomba on anggota_lomba.id_adm=adm_lomba.id_adm where anggota_lomba.id_anggota='+str(id_anggota))
-        hasil = self.cursor.fetchone()
-        # print 'hasil',hasil
-        # hasil = len(hasil)
-        
-        if num_count>0 or hasil!=None:
-            return "duplicate member"
-        try:
-            self.cursor.execute(sql)
-            self.db.commit()
-            return 'sukses'
-        except Exception, e:
-            self.db.rollback()
-            return e 
-
+    
     def hapusLomba(self,id_lomba):
         sql='update lomba set id_user=0 where id_lomba='+str(id_lomba)+';'
         try:

@@ -26,6 +26,15 @@ class Adm_lomba(Database):
 
             self.cursor.close()
             self.cursor = self.db.cursor()
+            sql_add = 'select id_adm from adm_lomba where id_ketua='+str(id_ketua)+' and nama_tim='+str(nama_tim)+';'
+            # print sql_add
+            self.cursor.execute(sql_add)
+            id_adm = self.cursor.fetchone()[0]
+            print "id",id_adm
+            print "hasil",self.tambahAnggotaId(id_adm,id_ketua)
+            
+            self.cursor.close()
+            self.cursor = self.db.cursor()
             self.cursor.execute('select id_adm from adm_lomba where id_ketua="'+str(id_ketua)+'" and id_lomba="'+str(id_lomba)+'"') 
             id_adm = self.cursor.fetchone()[0]
             with Anggota_lomba() as c_anggota:
@@ -34,8 +43,33 @@ class Adm_lomba(Database):
             return self.bayar_init(id_ketua,id_lomba)
 
         except Exception, e:
+            print "eksepsi satu"
             self.db.rollback()
             return e
+
+    def tambahAnggotaId(self, id_adm,  id_anggota):
+        self.cursor.execute('select count(*) from anggota_lomba where id_adm='+str(id_adm)+' and id_anggota='+str(id_anggota)+';')
+        num_count = self.cursor.fetchone()[0]
+        sql='insert into anggota_lomba(id_adm, id_anggota) values ('+str(id_adm)+','+str(id_anggota)+')'
+        
+        self.cursor.close()
+        self.cursor = self.db.cursor()
+        self.cursor.execute('select adm_lomba.id_lomba from adm_lomba inner join anggota_lomba on anggota_lomba.id_adm=adm_lomba.id_adm where anggota_lomba.id_anggota='+str(id_anggota))
+        hasil = self.cursor.fetchone()
+        # print 'hasil',hasil
+        # hasil = len(hasil)
+        
+        if num_count>0 or hasil!=None:
+            return "duplicate member"
+        try:
+            self.cursor.execute(sql)
+            self.db.commit()
+            print "sukses"
+            return 'sukses'
+        except Exception, e:
+            self.db.rollback()
+            print "eksepsi dua"
+            return e 
 
     def bayar_init(self, id_ketua, id_lomba):
         status_pembayaran = 0
