@@ -67,8 +67,8 @@ def updateAKun():
         email = data["email"]
         universitas = data["universitas"]
         no_ktm = data["no_ktm"]
-        
-        res = c_user.updateAkun(id_user, nama, "", email, universitas, no_ktm, "")
+        no_hp = data["no_hp"]
+        res = c_user.updateAkun(id_user, nama, "", email, universitas, no_ktm, "",no_hp)
         return jsn(1,"sukses") if res else jsn(0,"")
 
 
