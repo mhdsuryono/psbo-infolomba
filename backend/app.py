@@ -277,7 +277,7 @@ def getLombaSaya():
         data = request.get_json()
         id_user = data["id_anggota"]
         resp = c_lomba.getLombaSaya(id_user)
-        list_lomba = [{"id_adm":res[0],"id_lomba":res[1],"nama_lomba":res[2],"deadline":res[3],"nama_tim":res[4]} for res in resp]
+        list_lomba = [{"id_adm":res[0],"id_lomba":res[1],"nama_lomba":res[2],"deadline":res[3],"nama_tim":res[4],"id_pembuat":res[5]} for res in resp]
         return jsonify(list_lomba)
 
 
