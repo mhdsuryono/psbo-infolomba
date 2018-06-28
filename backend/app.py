@@ -176,7 +176,7 @@ def getStatusBayar():
 def getLomba():
     with Lomba() as lomba:
         resp = lomba.getLomba()
-        list_lomba = [{"id_lomba":res[0],"nama_lomba":res[1],"deskripsi":res[2],"tanggal_dibuat":res[3],"tanggal_mulai":res[4],"tanggal_ditutup":res[5],"tempat":res[6],"biaya":res[7],"id_user":res[8],"max_anggota":res[9],"kategori":res[10],"aturan":res[11],"hadiah":res[12]} for res in resp]
+        list_lomba = [{"id_lomba":res[0],"nama_lomba":res[1],"deskripsi":res[2],"tanggal_dibuat":res[3],"tanggal_mulai":res[4],"tanggal_ditutup":res[5],"tempat":res[6],"biaya":res[7],"id_user":res[8],"max_anggota":res[9],"kategori":res[10],"aturan":res[11],"hadiah":res[12],"nama_user":res[14],"email":res[16],"no_hp":res[22]} for res in resp]
         return jsonify(list_lomba)
 
 @app.route('/getLombaKategori',methods=['POST'])
@@ -185,7 +185,7 @@ def getLombaKategori():
         data = request.get_json()
         kategori = data["kategori"]
         resp = lomba.getLombaKategori(kategori)
-        list_lomba = [{"id_lomba":res[0],"nama_lomba":res[1],"deskripsi":res[2],"tanggal_dibuat":res[3],"tanggal_mulai":res[4],"tanggal_ditutup":res[5],"tempat":res[6],"biaya":res[7],"id_user":res[8],"max_anggota":res[9],"kategori":res[10],"aturan":res[11],"hadiah":res[12]} for res in resp]
+        list_lomba = [{"id_lomba":res[0],"nama_lomba":res[1],"deskripsi":res[2],"tanggal_dibuat":res[3],"tanggal_mulai":res[4],"tanggal_ditutup":res[5],"tempat":res[6],"biaya":res[7],"id_user":res[8],"max_anggota":res[9],"kategori":res[10],"aturan":res[11],"hadiah":res[12],"nama_user":res[14],"email":res[16],"no_hp":res[22]} for res in resp]
         return jsonify(list_lomba)
 
 @app.route('/getLombaId',methods=['POST'])

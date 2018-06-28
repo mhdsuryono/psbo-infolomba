@@ -71,14 +71,14 @@ class Lomba(Database):
 
     def getLomba(self):
         tanggal_sekarang = "timestamp('"+ str(datetime.datetime.now()) +"')"
-        sql = 'select * from lomba where tanggal_ditutup>'+tanggal_sekarang+';'
+        sql = 'select * from lomba inner join user on lomba.id_user=user.id_user where  lomba.tanggal_ditutup>'+tanggal_sekarang+';'
         self.cursor.execute(sql)
         res = self.cursor.fetchall()
         return res
 
     def getLombaKategori(self,kategori):
         tanggal_sekarang = "timestamp('"+ str(datetime.datetime.now()) +"')"
-        sql = 'select * from lomba where tanggal_ditutup>'+tanggal_sekarang+' and kategori="'+kategori+'";'
+        sql = 'select * from lomba inner join user on lomba.id_user=user.id_user where tanggal_ditutup>'+tanggal_sekarang+' and kategori="'+kategori+'";'
         print (sql)
         self.cursor.execute(sql)
         res = self.cursor.fetchall()
