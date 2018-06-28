@@ -20,10 +20,17 @@ class Anggota_lomba(Database,Lomba,User):
         self.cursor = self.db.cursor()
         self.cursor.execute('select adm_lomba.id_lomba from adm_lomba inner join anggota_lomba on anggota_lomba.id_adm=adm_lomba.id_adm where anggota_lomba.id_anggota='+str(id_anggota))
         hasil = self.cursor.fetchone()
+        flag = False
         # print 'hasil',hasil
-        # hasil = len(hasil)
+        try:
+            hasil = len(hasil)
+            if hasil != None:
+                flag = True
+            if hasil > 0:
+                flag = True
+
         
-        if num_count>0 or hasil!=None:
+        if num_count>0 or flag:
             return "duplicate member"
         try:
             self.cursor.execute(sql)
