@@ -96,8 +96,14 @@ class Lomba(Database):
         self.cursor.execute(sql)
         res = self.cursor.fetchall()
 
-        sql_nama_lomba = 'select adm_lomba.id_adm,adm_lomba.id_ketua,adm_lomba.nama_tim,adm_lomba.id_lomba,lomba.nama_lomba from adm_lomba inner join lomba on adm_lomba.id_lomba=lomba.id_lomba where adm_lomba.id_lomba='+id_lomba+';'
-        return res
+        self.cursor.close()
+        self.cursor = self.db.cursor()
+        # sql_nama_lomba = 'select adm_lomba.id_adm,adm_lomba.id_ketua,adm_lomba.nama_tim,adm_lomba.id_lomba,lomba.nama_lomba from adm_lomba inner join lomba on adm_lomba.id_lomba=lomba.id_lomba where adm_lomba.id_lomba='+id_lomba+';'
+        sql_nama_lomba = 'select nama_lomba from lomba where id_lomba='+str(id_lomba)+';'
+        self.cursor.execute(sql_nama_lomba)
+        nama_lomba = self.cursor.fetchone()[0]
+        return res,nama_lomba
+      
 
     def getLombaIdLomba(self,id_lomba):
         tanggal_sekarang = "timestamp('"+ str(datetime.datetime.now()) +"')"
