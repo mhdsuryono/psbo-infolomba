@@ -49,7 +49,13 @@ class Anggota_lomba(Database,Lomba,User):
         sql = 'select anggota_lomba.id_anggota, user.nama from anggota_lomba inner join user on anggota_lomba.id_anggota=user.id_user where anggota_lomba.id_adm='+str(id_adm)+';'
         self.cursor.execute(sql)
         res = self.cursor.fetchall()
-        return res
+        self.cursor.close()
+        self.cursor = self.db.cursor()
+        sql = 'select id_ketua from adm_lomba where id_adm='+str(id_adm)+';'
+        self.cursor.execute(sql)
+        res_ketua = self.cursor.fetchone()
+        id_ketua = res_ketua[0]
+        return res,id_ketua
 
 
 
