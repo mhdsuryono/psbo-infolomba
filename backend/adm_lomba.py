@@ -59,7 +59,7 @@ class Adm_lomba(Database):
         # print 'hasil',hasil
         # hasil = len(hasil)
         
-        if num_count>0 or hasil!=None:
+        if num_count>0:
             return "duplicate member"
         try:
             self.cursor.execute(sql)
