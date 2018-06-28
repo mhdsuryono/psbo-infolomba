@@ -232,7 +232,7 @@ def getChat():
         id_1 = data["id_1"]
         id_2 = data["id_2"]
         resp = c_chat.getChat(id_1,id_2)
-        list_chat = [{"id_chat":res[0],"id_pengirim":res[1],"id_penerima":res[2],"pesan":res[3],"tanggal":res[4],"status_baca":res[5]} for res in resp]
+        list_chat = [{"id_chat":res.id_chat,"id_pengirim":res.id_pengirim,"id_penerima":res.id_penerima,"pesan":res.pesan,"tanggal":res.tanggal,"status_baca":res.status_baca} for res in resp]
         return jsonify(list_chat)
 
 @app.route('/semuaChat',methods=['POST'])

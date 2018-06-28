@@ -8,39 +8,20 @@ from user import User
 class Chat(Database,User):
     def tambahChat(self, id_pengirim, id_penerima, pesan):
        # tanggal auto
-        tanggal = datetime.datetime.now().strftime("timestamp('%Y-%m-%d %H:%M:%S')")
+        tanggal = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         pesan = "'"+pesan+"'"
-        list_arg = [str(id_pengirim), str(id_penerima), pesan, tanggal]
-        val = ','.join(list_arg)
-        sql='insert into chat(id_pengirim, id_penerima, pesan, tanggal, status_baca) values ('+val+',0)'
         # print sql
-        try:
-            self.cursor.execute(sql)
-            self.db.commit()
-            return True
-        except Exception, e:
-            self.db.rollback()
-            print e
-            return False
-            
+        res = DB_Chat.insert(id_pengirim=id_pengirim,id_penerima=id_penerima,pesan=pesan,tanggal=str(tanggal),status_baca=0).execute()
+       
+        return True
+  
     def hapusChat(self,id_chat):
-        sql='delete from chat where id_chat='+str(id_chat)
-        try:
-            self.cursor.execute(sql)
-            self.db.commit()
-            return True
-        except:
-            self.db.rollback()
-            return False
+        res = DB_Chat.get(DB_Chat.id_chat==id_chat).delete_instance()
+        return "1"
 
+    # not
     def getChat(self, id1, id2):
-
-        sql='select * from chat where (id_pengirim='+str(id1)+' and id_penerima='+str(id2)+') or (id_pengirim='+str(id2)+' and id_penerima='+str(id1)+');'
-        # tambah cek status, jika == 2 , dibuang
-        # otomatis update status baca
-        # status 0=unread, 1=read, 2= telah dihapus
-        self.cursor.execute(sql)
-        res = self.cursor.fetchall()
+        res = DB_Chat.select().where((DB_Chat.id_pengirim==str(id1) | (DB_Chat.id_pengirim==str(id2))) & (DB_Chat.id_penerima==str(id1) | (DB_Chat.id_penerima==str(id2))) )
         return res
 
     def semuaChat(self,  id_kita):
