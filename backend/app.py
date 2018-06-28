@@ -40,7 +40,7 @@ def login():
         if res == None:
             return jsn(0,"Not Found")
         resp = c_user.getProfile(str(res[0]))
-        return jsonify(id_user=resp[0],nama=resp[1],jenis_kelamin=resp[2],email=resp[3],universitas=resp[4],no_ktm=resp[5],status_aktif=resp[6],status_akses=resp[7],status='1')
+        return jsonify(id_user=resp[0],nama=resp[1],jenis_kelamin=resp[2],email=resp[3],universitas=resp[4],no_ktm=resp[5],status_aktif=resp[6],status_akses=resp[7],status='1',no_hp=resp[8])
 
 
 @app.route('/buatAkun',methods=['POST'])
