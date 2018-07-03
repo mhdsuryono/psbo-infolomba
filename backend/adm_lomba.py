@@ -6,7 +6,7 @@ from anggota_lomba import Anggota_lomba
 
 class Adm_lomba(Database):
 
-    def daftarLomba(self, id_ketua, id_lomba, nama_tim):
+    def daftarLomba(self, id_ketua, id_lomba, nama_tim): #Mendaftarkan Pengguna di Lomba
         status_penyisihan = '0'
         nama_tim = '"'+nama_tim+'"';
         list_arg = [id_ketua, id_lomba, nama_tim, status_penyisihan]
@@ -47,6 +47,9 @@ class Adm_lomba(Database):
             self.db.rollback()
             return e
 
+<<<<<<< HEAD
+    def bayar_init(self, id_ketua, id_lomba): #Inisiasi status pembayaran awal
+=======
     def tambahAnggotaId(self, id_adm,  id_anggota):
         self.cursor.execute('select count(*) from anggota_lomba where id_adm='+str(id_adm)+' and id_anggota='+str(id_anggota)+';')
         num_count = self.cursor.fetchone()[0]
@@ -72,6 +75,7 @@ class Adm_lomba(Database):
             return e 
 
     def bayar_init(self, id_ketua, id_lomba):
+>>>>>>> origin/master
         status_pembayaran = 0
         list_arg = [id_ketua,id_lomba,status_pembayaran]
         list_arg = ",".join(str(x) for x in list_arg)
@@ -87,7 +91,7 @@ class Adm_lomba(Database):
 
 
 
-    def updateStatusBayar(self, id_ketua, id_lomba,status_pembayaran):
+    def updateStatusBayar(self, id_ketua, id_lomba,status_pembayaran): #Mengupdate status bayar peserta
         sql = 'update pembayaran set status_pembayaran='+str(status_pembayaran)+' where id_ketua='+str(id_ketua)+' and id_lomba='+str(id_lomba)+' ;'
 
         try:
@@ -98,11 +102,8 @@ class Adm_lomba(Database):
             self.db.rollback()
             return False
 
-    def getStatusBayar(self,id_ketua,id_lomba):
+    def getStatusBayar(self,id_ketua,id_lomba): #Mendapatkan status pembayaran lomba
         sql = 'select status_pembayaran from pembayaran where id_ketua='+str(id_ketua)+' and id_lomba='+str(id_lomba)+' ;'
         self.cursor.execute(sql)
         res = self.cursor.fetchone()
         return res[0]
-
-# with Adm_lomba() as a:
-#     a.daftarLomba(1,1,"sapi team",0)
