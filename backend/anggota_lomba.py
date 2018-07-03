@@ -8,7 +8,7 @@ from user import User
 
 
 class Anggota_lomba(Database,Lomba,User):
-    def tambahAnggota(self, id_adm,  email):
+    def tambahAnggota(self, id_adm,  email): #Menambahkan anggota ke dalam tim
         id_anggota = self.getIdByEmail(email)
         if id_anggota == "gagal":
             return "gagal"
@@ -42,7 +42,7 @@ class Anggota_lomba(Database,Lomba,User):
             return e 
         
 
-    def hapusAnggota(self, id_adm, id_anggota):
+    def hapusAnggota(self, id_adm, id_anggota): #Menghapus anggota dari tim
         sql='delete from anggota_lomba where id_adm='+str(id_adm)+' and id_anggota='+str(id_anggota)+';'
         try:
             self.cursor.execute(sql)
@@ -53,7 +53,7 @@ class Anggota_lomba(Database,Lomba,User):
             return e 
         
 
-    def getAnggota(self,id_adm):
+    def getAnggota(self,id_adm): #Mendapatkan list anggota tim
         sql = 'select anggota_lomba.id_anggota, user.nama from anggota_lomba inner join user on anggota_lomba.id_anggota=user.id_user where anggota_lomba.id_adm='+str(id_adm)+';'
         self.cursor.execute(sql)
         res = self.cursor.fetchall()

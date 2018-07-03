@@ -6,7 +6,7 @@ from db import Database
 from user import User
 
 class Chat(Database,User):
-    def tambahChat(self, id_pengirim, id_penerima, pesan):
+    def tambahChat(self, id_pengirim, id_penerima, pesan): #Mengirimkan chat 
        # tanggal auto
         tanggal = datetime.datetime.now().strftime("timestamp('%Y-%m-%d %H:%M:%S')")
         pesan = "'"+pesan+"'"
@@ -23,7 +23,7 @@ class Chat(Database,User):
             print e
             return False
             
-    def hapusChat(self,id_chat):
+    def hapusChat(self,id_chat): #Menghapus chat
         sql='delete from chat where id_chat='+str(id_chat)
         try:
             self.cursor.execute(sql)
@@ -33,7 +33,7 @@ class Chat(Database,User):
             self.db.rollback()
             return False
 
-    def getChat(self, id1, id2):
+    def getChat(self, id1, id2): #Mendapatkan chat dengan orang tertentu
 
         sql='select * from chat where (id_pengirim='+str(id1)+' and id_penerima='+str(id2)+') or (id_pengirim='+str(id2)+' and id_penerima='+str(id1)+');'
         # tambah cek status, jika == 2 , dibuang
@@ -43,7 +43,7 @@ class Chat(Database,User):
         res = self.cursor.fetchall()
         return res
 
-    def semuaChat(self,  id_kita):
+    def semuaChat(self,  id_kita): #Menampilkan nama orang yang pernah chat dengan kita
 
         sql='select id_penerima,id_pengirim from chat where id_pengirim= '+str(id_kita)+ ' or id_penerima='+str(id_kita)+';'
 
@@ -77,7 +77,7 @@ class Chat(Database,User):
         # panggi hitungUnread
         # {{id="1",unread=4},{id="2",unerad=6},{}}
 
-    def lastChat(self, id_1,id_2):
+    def lastChat(self, id_1,id_2): #Menampilkan chat terakhir dengan orang tertentu
         sql='select pesan, tanggal,status_baca from chat where id_pengirim= '+str(id_1)+ ' and id_penerima='+str(id_2)+' or id_pengirim='+str(id_2)+' and id_penerima='+str(id_1)+' order by tanggal;'
         self.cursor.execute(sql)
         res = self.cursor.fetchall()

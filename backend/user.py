@@ -2,7 +2,7 @@ from db import Database
 
 class User(Database):
 
-    def buatAkun(self,nama, jenis_kelamin, email, password, universitas, no_ktm ,no_hp):
+    def buatAkun(self,nama, jenis_kelamin, email, password, universitas, no_ktm ,no_hp): #Membuat akun
         status_aktif = '1'
         status_akses = '0'
 
@@ -26,7 +26,7 @@ class User(Database):
 
 
 
-    def hapusAkun(self,id_user):
+    def hapusAkun(self,id_user): #Menghapus Akun Kita
         sql='update user set status_aktif=0 where id_user='+str(id_user)+';'
         try:
             self.cursor.execute(sql)
@@ -36,7 +36,7 @@ class User(Database):
             self.db.rollback()
             return False
 
-    def updateAkun(self,id_user, nama, jenis_kelamin, email, universitas, no_ktm, password,no_hp):
+    def updateAkun(self,id_user, nama, jenis_kelamin, email, universitas, no_ktm, password,no_hp): #Update informasi akun
         list_arg=[nama, jenis_kelamin, email, universitas, no_ktm, password,str(no_hp)]
         val_arg=[]
         if list_arg[0]!="":
@@ -69,7 +69,7 @@ class User(Database):
     #     self.cursor.execute(sql)
     #     for i in self.cursor.fetchall():
     #         print i
-    def login(self,username,password):
+    def login(self,username,password): #Login kedalam sistem
         username = str(username)
         password = str(password)
         sql='select id_user from user where email="'+username+'" and password="'+password+'" and status_aktif=1;'
@@ -83,13 +83,13 @@ class User(Database):
         # print res
         return res
 
-    def getProfile(self,id_user):
+    def getProfile(self,id_user): #Mendapatkan profil untuk ditampilkan
         sql = 'select * from user where id_user='+str(id_user)+';'
         self.cursor.execute(sql)
         res = self.cursor.fetchone()
         return res
 
-    def getIdByEmail(self,email):
+    def getIdByEmail(self,email): #Mendapatkan ID dari email user
         sql = 'select id_user from user where email="'+str(email)+'" and status_aktif=1 ;'
         try: 
             self.cursor.execute(sql)
@@ -100,7 +100,7 @@ class User(Database):
             return "gagal"
         return res[0]
 
-    def ubahPassword(self,id_user, passlama,passbaru):
+    def ubahPassword(self,id_user, passlama,passbaru): #Ganti password
         sql='select id_user from user where id_user="'+str(id_user)+'" and password="'+passlama+'" and status_aktif=1;'
         self.cursor.execute(sql)
         res = self.cursor.fetchone()

@@ -1,7 +1,7 @@
 from db import Database
 import datetime
 class Lomba(Database):
-    def buatLomba(self, nama_lomba, deskripsi, tanggal_mulai, tanggal_ditutup, tempat, biaya, max_anggota, kategori,id_user,aturan,hadiah):
+    def buatLomba(self, nama_lomba, deskripsi, tanggal_mulai, tanggal_ditutup, tempat, biaya, max_anggota, kategori,id_user,aturan,hadiah): #Membuat lomba
         tanggal_mulai = "timestamp('"+ tanggal_mulai +"')"
         tanggal_dibuat = "timestamp('"+ str(datetime.datetime.now()) +"')"
         tanggal_ditutup = "timestamp('"+ tanggal_ditutup +"')"
@@ -20,7 +20,7 @@ class Lomba(Database):
             return e
 
     
-    def hapusLomba(self,id_lomba):
+    def hapusLomba(self,id_lomba): #Menghapus lomba yang ada
         sql='update lomba set id_user=0 where id_lomba='+str(id_lomba)+';'
         try:
             self.cursor.execute(sql)
@@ -32,7 +32,7 @@ class Lomba(Database):
         # delete anggota juga nanti
         return "sukses"
 
-    def updateLomba(self, id_lomba, nama_lomba, deskripsi, tanggal_mulai, tanggal_ditutup, tempat, biaya, max_anggota, kategori, id_user,aturan,hadiah):
+    def updateLomba(self, id_lomba, nama_lomba, deskripsi, tanggal_mulai, tanggal_ditutup, tempat, biaya, max_anggota, kategori, id_user,aturan,hadiah): #Update deskripsi lomba
         list_arg=[nama_lomba, deskripsi, tanggal_mulai, tanggal_ditutup, tempat, str(biaya),  str(max_anggota), kategori, str(id_user),str(aturan),str(hadiah)]
         val_arg=[]
         if list_arg[0]!="":
@@ -71,14 +71,14 @@ class Lomba(Database):
             self.db.rollback()
             return e
 
-    def getLomba(self):
+    def getLomba(self): #Mendapatkan list lomba yang masih aktif
         tanggal_sekarang = "timestamp('"+ str(datetime.datetime.now()) +"')"
         sql = 'select * from lomba inner join user on lomba.id_user=user.id_user where  lomba.tanggal_ditutup>'+tanggal_sekarang+';'
         self.cursor.execute(sql)
         res = self.cursor.fetchall()
         return res
 
-    def getLombaKategori(self,kategori):
+    def getLombaKategori(self,kategori): #Mendapatkan list lomba berdasarkan kategori
         tanggal_sekarang = "timestamp('"+ str(datetime.datetime.now()) +"')"
         sql = 'select * from lomba inner join user on lomba.id_user=user.id_user where tanggal_ditutup>'+tanggal_sekarang+' and kategori="'+kategori+'";'
         print (sql)
@@ -86,14 +86,14 @@ class Lomba(Database):
         res = self.cursor.fetchall()
         return res
 
-    def getLombaId(self,id_user):
+    def getLombaId(self,id_user): #Mendapatkan lomba yang diikuti oleh saya
         tanggal_sekarang = "timestamp('"+ str(datetime.datetime.now()) +"')"
         sql = 'select * from lomba where id_user='+str(id_user)+';'
         self.cursor.execute(sql)
         res = self.cursor.fetchall()
         return res
 
-    def getPendaftar(self,id_lomba):
+    def getPendaftar(self,id_lomba): #Mendapatkan pendaftar dari lomba tersebut
         sql = 'select id_adm,id_ketua,nama_tim,id_lomba from adm_lomba where id_lomba='+id_lomba+';'
         self.cursor.execute(sql)
         res = self.cursor.fetchall()
@@ -107,7 +107,7 @@ class Lomba(Database):
         return res,nama_lomba
       
 
-    def getLombaIdLomba(self,id_lomba):
+    def getLombaIdLomba(self,id_lomba): #Mendapatkan Id Lomba
         tanggal_sekarang = "timestamp('"+ str(datetime.datetime.now()) +"')"
         sql = 'select * from lomba where tanggal_ditutup>'+tanggal_sekarang+' and id_lomba="'+str(id_lomba)+'";'
         print "dari sql",sql
@@ -115,13 +115,13 @@ class Lomba(Database):
         res = self.cursor.fetchall()
         return res
 
-    def getLombaByAdm(self, id_adm):
+    def getLombaByAdm(self, id_adm): #Mendapatkan list lomba dari ADM
         sql = 'select id_lomba,nama_tim from adm_lomba where id_adm='+str(id_adm)+';'
         self.cursor.execute(sql)
         res = self.cursor.fetchone()
         return res
 
-    def getLombaSaya(self,id_anggota):
+    def getLombaSaya(self,id_anggota): #Mendapatkan lomba yang saya ikuti
         sql = 'select id_adm from anggota_lomba where id_anggota='+str(id_anggota)+';'
         self.cursor.execute(sql)
         list_id_adm = self.cursor.fetchall()
